@@ -1,0 +1,5 @@
+# Go dependencies
+vendor/
+
+# Editorconfig
+.editorconfig
