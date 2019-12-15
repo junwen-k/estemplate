@@ -32,7 +32,7 @@ func NewDatatypeByte(name string) *DatatypeByte {
 	}
 }
 
-// Name is the key of the Byte Property.
+// Name returns field key for the Datatype.
 func (b *DatatypeByte) Name() string {
 	return b.name
 }
@@ -96,7 +96,7 @@ func (b *DatatypeByte) NullValue(nullValue int) *DatatypeByte {
 	return b
 }
 
-// Store sets whether the field value should be stored and retrievable separately
+// Store sets whether if the field value should be stored and retrievable separately
 // from the `_source` field. Defaults to false.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-store.html

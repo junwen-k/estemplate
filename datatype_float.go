@@ -32,7 +32,7 @@ func NewDatatypeFloat(name string) *DatatypeFloat {
 	}
 }
 
-// Name is the key of the Float Property.
+// Name returns field key for the Datatype.
 func (f *DatatypeFloat) Name() string {
 	return f.name
 }
@@ -96,7 +96,7 @@ func (f *DatatypeFloat) NullValue(nullValue int) *DatatypeFloat {
 	return f
 }
 
-// Store sets whether the field value should be stored and retrievable separately
+// Store sets whether if the field value should be stored and retrievable separately
 // from the `_source` field. Defaults to false.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-store.html

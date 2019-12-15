@@ -32,7 +32,7 @@ func NewDatatypeShort(name string) *DatatypeShort {
 	}
 }
 
-// Name is the key of the Short Property.
+// Name returns field key for the Datatype.
 func (s *DatatypeShort) Name() string {
 	return s.name
 }
@@ -96,7 +96,7 @@ func (s *DatatypeShort) NullValue(nullValue int) *DatatypeShort {
 	return s
 }
 
-// Store sets whether the field value should be stored and retrievable separately
+// Store sets whether if the field value should be stored and retrievable separately
 // from the `_source` field. Defaults to false.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-store.html

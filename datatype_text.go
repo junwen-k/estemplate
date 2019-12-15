@@ -43,7 +43,7 @@ func NewDatatypeText(name string) *DatatypeText {
 	}
 }
 
-// Name is the key of the Text Property.
+// Name returns field key for the Datatype.
 func (t *DatatypeText) Name() string {
 	return t.name
 }
@@ -97,7 +97,7 @@ func (t *DatatypeText) FielddataFrequencyFilter(fielddataFrequencyFilter *Fieldd
 	return t
 }
 
-// Fields sets multi-fields allow the same string value to be indexed in multiple
+// Fields sets multi-fields which allow the same string value to be indexed in multiple
 // ways for different purposes.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/multi-fields.html
@@ -171,7 +171,7 @@ func (t *DatatypeText) PositionIncrementGap(positionIncrementGap int) *DatatypeT
 	return t
 }
 
-// Store sets whether the field value should be stored and retrievable separately
+// Store sets whether if the field value should be stored and retrievable separately
 // from the `_source` field. Defaults to false.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-store.html

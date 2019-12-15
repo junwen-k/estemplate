@@ -39,7 +39,7 @@ func NewDatatypeKeyword(name string) *DatatypeKeyword {
 	}
 }
 
-// Name is the key of the Keyword Property.
+// Name returns field key for the Datatype.
 func (k *DatatypeKeyword) Name() string {
 	return k.name
 }
@@ -73,7 +73,7 @@ func (k *DatatypeKeyword) EagerGlobalOrdinals(eagerGlobalOrdinals bool) *Datatyp
 	return k
 }
 
-// Fields sets multi-fields allow the same string value to be indexed in multiple
+// Fields sets multi-fields which allow the same string value to be indexed in multiple
 // ways for different purposes.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/multi-fields.html
@@ -137,7 +137,7 @@ func (k *DatatypeKeyword) NullValue(nullValue string) *DatatypeKeyword {
 	return k
 }
 
-// Store sets whether the field value should be stored and retrievable separately
+// Store sets whether if the field value should be stored and retrievable separately
 // from the `_source` field. Defaults to false.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-store.html

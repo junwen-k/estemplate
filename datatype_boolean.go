@@ -33,7 +33,7 @@ func NewDatatypeBoolean(name string) *DatatypeBoolean {
 	}
 }
 
-// Name is the key of the Boolean Property.
+// Name returns field key for the Datatype.
 func (b *DatatypeBoolean) Name() string {
 	return b.name
 }
@@ -77,7 +77,7 @@ func (b *DatatypeBoolean) NullValue(nullValue interface{}) *DatatypeBoolean {
 	return b
 }
 
-// Store sets whether the field value should be stored and retrievable separately
+// Store sets whether if the field value should be stored and retrievable separately
 //
 // from the `_source` field. Defaults to false.
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-store.html

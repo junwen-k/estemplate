@@ -40,7 +40,7 @@ func NewDatatypeDate(name string) *DatatypeDate {
 	}
 }
 
-// Name is the key of the Date Property.
+// Name returns field key for the Datatype.
 func (d *DatatypeDate) Name() string {
 	return d.name
 }
@@ -122,7 +122,7 @@ func (d *DatatypeDate) NullValue(nullValue interface{}) *DatatypeDate {
 	return d
 }
 
-// Store sets whether the field value should be stored and retrievable separately
+// Store sets whether if the field value should be stored and retrievable separately
 // from the `_source` field. Defaults to false.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-store.html

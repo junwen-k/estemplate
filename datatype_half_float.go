@@ -32,7 +32,7 @@ func NewDatatypeHalfFloat(name string) *DatatypeHalfFloat {
 	}
 }
 
-// Name is the key of the Half Float Property.
+// Name returns field key for the Datatype.
 func (hf *DatatypeHalfFloat) Name() string {
 	return hf.name
 }
@@ -96,7 +96,7 @@ func (hf *DatatypeHalfFloat) NullValue(nullValue int) *DatatypeHalfFloat {
 	return hf
 }
 
-// Store sets whether the field value should be stored and retrievable separately
+// Store sets whether if the field value should be stored and retrievable separately
 // from the `_source` field. Defaults to false.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-store.html
