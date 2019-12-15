@@ -38,7 +38,7 @@ func (s *DatatypeShort) Name() string {
 }
 
 // Coerce sets whether if the field should be coerced, attempting to clean up
-// dirty values to fit the datatype.
+// dirty values to fit the datatype. Defaults to true.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/coerce.html
 // for details.

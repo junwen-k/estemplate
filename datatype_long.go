@@ -7,7 +7,7 @@ package estemplate
 import "fmt"
 
 // DatatypeLong Core Datatype for numeric value.
-// A signed 64-bit integer with a minimum value of -263 and a maximum value of 263-1.
+// A signed 64-bit integer with a minimum value of -2⁶³ and a maximum value of 2⁶³-1.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/number.html
 // for details.
@@ -38,7 +38,7 @@ func (l *DatatypeLong) Name() string {
 }
 
 // Coerce sets whether if the field should be coerced, attempting to clean up
-// dirty values to fit the datatype.
+// dirty values to fit the datatype. Defaults to true.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/coerce.html
 // for details.

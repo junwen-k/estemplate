@@ -7,7 +7,7 @@ package estemplate
 import "fmt"
 
 // DatatypeInteger Core Datatype for numeric value.
-// A signed 32-bit integer with a minimum value of -231 and a maximum value of 231-1.
+// A signed 32-bit integer with a minimum value of -2³¹ and a maximum value of 2³¹-1.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/number.html
 // for details.
@@ -38,7 +38,7 @@ func (i *DatatypeInteger) Name() string {
 }
 
 // Coerce sets whether if the field should be coerced, attempting to clean up
-// dirty values to fit the datatype.
+// dirty values to fit the datatype. Defaults to true.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/coerce.html
 // for details.
