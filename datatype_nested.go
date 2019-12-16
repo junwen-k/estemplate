@@ -9,7 +9,7 @@ import "fmt"
 // DatatypeNested Complex Datatype for JSON array of objects to be indexed
 // in a way they can be queried independently of each other.
 //
-// See https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/nested.html
 // for details.
 type DatatypeNested struct {
 	Datatype
