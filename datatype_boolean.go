@@ -22,7 +22,7 @@ type DatatypeBoolean struct {
 	boost     *int
 	docValues *bool
 	index     *bool
-	nullValue *interface{}
+	nullValue interface{}
 	store     *bool
 }
 
