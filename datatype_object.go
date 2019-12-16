@@ -18,7 +18,7 @@ type DatatypeObject struct {
 
 	// fields specific to object datatype
 	dynamic    *bool
-	strict     *bool
+	strict     bool
 	enabled    *bool
 	properties []Datatype
 }
@@ -52,7 +52,7 @@ func (o *DatatypeObject) Dynamic(dynamic bool) *DatatypeObject {
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/dynamic.html
 // for details.
 func (o *DatatypeObject) Strict(strict bool) *DatatypeObject {
-	o.strict = &strict
+	o.strict = strict
 	return o
 }
 
@@ -109,7 +109,7 @@ func (o *DatatypeObject) Source(includeName bool) (interface{}, error) {
 	if o.dynamic != nil {
 		options["dynamic"] = o.dynamic
 	}
-	if o.strict != nil && *o.strict {
+	if o.strict {
 		options["dynamic"] = "strict"
 	}
 	if o.enabled != nil {
