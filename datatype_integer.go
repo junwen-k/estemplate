@@ -68,7 +68,7 @@ func (i *DatatypeInteger) DocValues(docValues bool) *DatatypeInteger {
 }
 
 // IgnoreMalformed sets whether if the field should ignore malformed numbers.
-// Defatuls to false.
+// Defaults to false.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/ignore-malformed.html
 // for details.

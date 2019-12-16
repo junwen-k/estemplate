@@ -28,7 +28,7 @@ func NewIndexPrefixes(minChars, maxChars int) *IndexPrefixes {
 }
 
 // MinChars sets the minimum prefix length to index, must be greater than 0.
-// Defatuls to 2.
+// Defaults to 2.
 func (p *IndexPrefixes) MinChars(minChars int) *IndexPrefixes {
 	p.minChars = minChars
 	return p
