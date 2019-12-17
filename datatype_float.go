@@ -17,7 +17,7 @@ type DatatypeFloat struct {
 
 	// fields specific to float datatype
 	coerce          *bool
-	boost           *int
+	boost           *float32
 	docValues       *bool
 	ignoreMalformed *bool
 	index           *bool
@@ -51,7 +51,7 @@ func (f *DatatypeFloat) Coerce(coerce bool) *DatatypeFloat {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (f *DatatypeFloat) Boost(boost int) *DatatypeFloat {
+func (f *DatatypeFloat) Boost(boost float32) *DatatypeFloat {
 	f.boost = &boost
 	return f
 }

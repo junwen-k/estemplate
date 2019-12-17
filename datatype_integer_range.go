@@ -17,7 +17,7 @@ type DatatypeIntegerRange struct {
 
 	// fields specific to integer range datatype
 	coerce *bool
-	boost  *int
+	boost  *float32
 	index  *bool
 	store  *bool
 }
@@ -48,7 +48,7 @@ func (r *DatatypeIntegerRange) Coerce(coerce bool) *DatatypeIntegerRange {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (r *DatatypeIntegerRange) Boost(boost int) *DatatypeIntegerRange {
+func (r *DatatypeIntegerRange) Boost(boost float32) *DatatypeIntegerRange {
 	r.boost = &boost
 	return r
 }

@@ -17,7 +17,7 @@ type DatatypeScaledFloat struct {
 
 	// fields specific to scaled float datatype
 	coerce          *bool
-	boost           *int
+	boost           *float32
 	docValues       *bool
 	ignoreMalformed *bool
 	index           *bool
@@ -52,7 +52,7 @@ func (sf *DatatypeScaledFloat) Coerce(coerce bool) *DatatypeScaledFloat {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (sf *DatatypeScaledFloat) Boost(boost int) *DatatypeScaledFloat {
+func (sf *DatatypeScaledFloat) Boost(boost float32) *DatatypeScaledFloat {
 	sf.boost = &boost
 	return sf
 }

@@ -17,7 +17,7 @@ type DatatypeFloatRange struct {
 
 	// fields specific to float range datatype
 	coerce *bool
-	boost  *int
+	boost  *float32
 	index  *bool
 	store  *bool
 }
@@ -48,7 +48,7 @@ func (r *DatatypeFloatRange) Coerce(coerce bool) *DatatypeFloatRange {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (r *DatatypeFloatRange) Boost(boost int) *DatatypeFloatRange {
+func (r *DatatypeFloatRange) Boost(boost float32) *DatatypeFloatRange {
 	r.boost = &boost
 	return r
 }

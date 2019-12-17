@@ -17,7 +17,7 @@ type DatatypeDouble struct {
 
 	// fields specific to double datatype
 	coerce          *bool
-	boost           *int
+	boost           *float32
 	docValues       *bool
 	ignoreMalformed *bool
 	index           *bool
@@ -51,7 +51,7 @@ func (d *DatatypeDouble) Coerce(coerce bool) *DatatypeDouble {
 // Boost sets Mapping field-level query time boosting. Defaults to 1.0.
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (d *DatatypeDouble) Boost(boost int) *DatatypeDouble {
+func (d *DatatypeDouble) Boost(boost float32) *DatatypeDouble {
 	d.boost = &boost
 	return d
 }

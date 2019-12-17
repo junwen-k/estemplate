@@ -19,7 +19,7 @@ type DatatypeBoolean struct {
 	name string
 
 	// fields specific to boolean datatype
-	boost     *int
+	boost     *float32
 	docValues *bool
 	index     *bool
 	nullValue interface{}
@@ -42,7 +42,7 @@ func (b *DatatypeBoolean) Name() string {
 // Boost sets Mapping field-level query time boosting. Defaults to 1.0.
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (b *DatatypeBoolean) Boost(boost int) *DatatypeBoolean {
+func (b *DatatypeBoolean) Boost(boost float32) *DatatypeBoolean {
 	b.boost = &boost
 	return b
 }

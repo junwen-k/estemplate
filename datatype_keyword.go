@@ -16,7 +16,7 @@ type DatatypeKeyword struct {
 	name string
 
 	// fields specific to keyword datatype
-	boost                    *int
+	boost                    *float32
 	docValues                *bool
 	eagerGlobalOrdinals      *bool
 	fields                   []Datatype
@@ -48,7 +48,7 @@ func (k *DatatypeKeyword) Name() string {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (k *DatatypeKeyword) Boost(boost int) *DatatypeKeyword {
+func (k *DatatypeKeyword) Boost(boost float32) *DatatypeKeyword {
 	k.boost = &boost
 	return k
 }

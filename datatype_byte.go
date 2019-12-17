@@ -17,7 +17,7 @@ type DatatypeByte struct {
 
 	// fields specific to byte datatype
 	coerce          *bool
-	boost           *int
+	boost           *float32
 	docValues       *bool
 	ignoreMalformed *bool
 	index           *bool
@@ -51,7 +51,7 @@ func (b *DatatypeByte) Coerce(coerce bool) *DatatypeByte {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (b *DatatypeByte) Boost(boost int) *DatatypeByte {
+func (b *DatatypeByte) Boost(boost float32) *DatatypeByte {
 	b.boost = &boost
 	return b
 }

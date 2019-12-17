@@ -17,7 +17,7 @@ type DatatypeDoubleRange struct {
 
 	// fields specific to double range datatype
 	coerce *bool
-	boost  *int
+	boost  *float32
 	index  *bool
 	store  *bool
 }
@@ -48,7 +48,7 @@ func (r *DatatypeDoubleRange) Coerce(coerce bool) *DatatypeDoubleRange {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (r *DatatypeDoubleRange) Boost(boost int) *DatatypeDoubleRange {
+func (r *DatatypeDoubleRange) Boost(boost float32) *DatatypeDoubleRange {
 	r.boost = &boost
 	return r
 }

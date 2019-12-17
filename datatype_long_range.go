@@ -17,7 +17,7 @@ type DatatypeLongRange struct {
 
 	// fields specific to long range datatype
 	coerce *bool
-	boost  *int
+	boost  *float32
 	index  *bool
 	store  *bool
 }
@@ -48,7 +48,7 @@ func (r *DatatypeLongRange) Coerce(coerce bool) *DatatypeLongRange {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (r *DatatypeLongRange) Boost(boost int) *DatatypeLongRange {
+func (r *DatatypeLongRange) Boost(boost float32) *DatatypeLongRange {
 	r.boost = &boost
 	return r
 }

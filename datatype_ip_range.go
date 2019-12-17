@@ -17,7 +17,7 @@ type DatatypeIPRange struct {
 
 	// fields specific to ip range datatype
 	coerce *bool
-	boost  *int
+	boost  *float32
 	index  *bool
 	store  *bool
 }
@@ -48,7 +48,7 @@ func (r *DatatypeIPRange) Coerce(coerce bool) *DatatypeIPRange {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (r *DatatypeIPRange) Boost(boost int) *DatatypeIPRange {
+func (r *DatatypeIPRange) Boost(boost float32) *DatatypeIPRange {
 	r.boost = &boost
 	return r
 }

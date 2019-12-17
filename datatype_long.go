@@ -17,7 +17,7 @@ type DatatypeLong struct {
 
 	// fields specific to long datatype
 	coerce          *bool
-	boost           *int
+	boost           *float32
 	docValues       *bool
 	ignoreMalformed *bool
 	index           *bool
@@ -51,7 +51,7 @@ func (l *DatatypeLong) Coerce(coerce bool) *DatatypeLong {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (l *DatatypeLong) Boost(boost int) *DatatypeLong {
+func (l *DatatypeLong) Boost(boost float32) *DatatypeLong {
 	l.boost = &boost
 	return l
 }

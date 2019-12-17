@@ -17,7 +17,7 @@ type DatatypeText struct {
 
 	// fields specific to text datatype
 	analzyer                 string
-	boost                    *int
+	boost                    *float32
 	eagerGlobalOrdinals      *bool
 	fielddata                *bool
 	fielddataFrequencyFilter *FielddataFrequencyFilter
@@ -62,7 +62,7 @@ func (t *DatatypeText) Analzyer(analzyer string) *DatatypeText {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (t *DatatypeText) Boost(boost int) *DatatypeText {
+func (t *DatatypeText) Boost(boost float32) *DatatypeText {
 	t.boost = &boost
 	return t
 }

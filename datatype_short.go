@@ -17,7 +17,7 @@ type DatatypeShort struct {
 
 	// fields specific to short datatype
 	coerce          *bool
-	boost           *int
+	boost           *float32
 	docValues       *bool
 	ignoreMalformed *bool
 	index           *bool
@@ -51,7 +51,7 @@ func (s *DatatypeShort) Coerce(coerce bool) *DatatypeShort {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (s *DatatypeShort) Boost(boost int) *DatatypeShort {
+func (s *DatatypeShort) Boost(boost float32) *DatatypeShort {
 	s.boost = &boost
 	return s
 }

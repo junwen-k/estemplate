@@ -17,7 +17,7 @@ type DatatypeDateRange struct {
 
 	// fields specific to date range datatype
 	coerce *bool
-	boost  *int
+	boost  *float32
 	index  *bool
 	store  *bool
 }
@@ -48,7 +48,7 @@ func (r *DatatypeDateRange) Coerce(coerce bool) *DatatypeDateRange {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (r *DatatypeDateRange) Boost(boost int) *DatatypeDateRange {
+func (r *DatatypeDateRange) Boost(boost float32) *DatatypeDateRange {
 	r.boost = &boost
 	return r
 }

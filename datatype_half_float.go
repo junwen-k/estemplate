@@ -17,7 +17,7 @@ type DatatypeHalfFloat struct {
 
 	// fields specific to half float datatype
 	coerce          *bool
-	boost           *int
+	boost           *float32
 	docValues       *bool
 	ignoreMalformed *bool
 	index           *bool
@@ -51,7 +51,7 @@ func (hf *DatatypeHalfFloat) Coerce(coerce bool) *DatatypeHalfFloat {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (hf *DatatypeHalfFloat) Boost(boost int) *DatatypeHalfFloat {
+func (hf *DatatypeHalfFloat) Boost(boost float32) *DatatypeHalfFloat {
 	hf.boost = &boost
 	return hf
 }

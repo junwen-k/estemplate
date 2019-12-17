@@ -20,7 +20,7 @@ type DatatypeDateNanoseconds struct {
 	name string
 
 	// fields specific to date nanoseconds datatype
-	boost           *int
+	boost           *float32
 	docValues       *bool
 	format          []*DateFormat
 	rawFormat       string
@@ -48,7 +48,7 @@ func (d *DatatypeDateNanoseconds) Name() string {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (d *DatatypeDateNanoseconds) Boost(boost int) *DatatypeDateNanoseconds {
+func (d *DatatypeDateNanoseconds) Boost(boost float32) *DatatypeDateNanoseconds {
 	d.boost = &boost
 	return d
 }

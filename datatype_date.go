@@ -21,7 +21,7 @@ type DatatypeDate struct {
 	name string
 
 	// fields specific to date datatype
-	boost           *int
+	boost           *float32
 	docValues       *bool
 	format          []*DateFormat
 	rawFormat       string
@@ -49,7 +49,7 @@ func (d *DatatypeDate) Name() string {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (d *DatatypeDate) Boost(boost int) *DatatypeDate {
+func (d *DatatypeDate) Boost(boost float32) *DatatypeDate {
 	d.boost = &boost
 	return d
 }

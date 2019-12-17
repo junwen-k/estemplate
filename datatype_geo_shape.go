@@ -28,6 +28,8 @@ type DatatypeGeoShape struct {
 	coerce           *bool
 }
 
+// TODO validations, option types and docs improvement
+
 // NewDatatypeGeoShape initializes a new DatatypeGeoShape.
 func NewDatatypeGeoShape(name string) *DatatypeGeoShape {
 	return &DatatypeGeoShape{
@@ -35,7 +37,10 @@ func NewDatatypeGeoShape(name string) *DatatypeGeoShape {
 	}
 }
 
-// TODO validations, option types and docs improvement
+// Name returns field key for the Datatype.
+func (s *DatatypeGeoShape) Name() string {
+	return s.name
+}
 
 // Tree sets the name of the PrefixTree implementation to be used.
 // Can be set to the following values:

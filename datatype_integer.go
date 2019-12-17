@@ -17,7 +17,7 @@ type DatatypeInteger struct {
 
 	// fields specific to integer datatype
 	coerce          *bool
-	boost           *int
+	boost           *float32
 	docValues       *bool
 	ignoreMalformed *bool
 	index           *bool
@@ -51,7 +51,7 @@ func (i *DatatypeInteger) Coerce(coerce bool) *DatatypeInteger {
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
-func (i *DatatypeInteger) Boost(boost int) *DatatypeInteger {
+func (i *DatatypeInteger) Boost(boost float32) *DatatypeInteger {
 	i.boost = &boost
 	return i
 }
