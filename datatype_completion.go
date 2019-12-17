@@ -15,8 +15,8 @@ type DatatypeCompletion struct {
 	name string
 
 	// fields specific to completion datatype
-	analzyer                   string
-	searchAnalzyer             string
+	analyzer                   string
+	searchAnalyzer             string
 	preserveSeparators         *bool
 	preservePositionIncrements *bool
 	maxInputLength             *int
@@ -34,17 +34,17 @@ func (c *DatatypeCompletion) Name() string {
 	return c.name
 }
 
-// Analzyer sets which analzyer should be used for indexing.
+// Analyzer sets which analyzer should be used for indexing.
 // Defaults to "simple".
-func (c *DatatypeCompletion) Analzyer(analzyer string) *DatatypeCompletion {
-	c.analzyer = analzyer
+func (c *DatatypeCompletion) Analyzer(analyzer string) *DatatypeCompletion {
+	c.analyzer = analyzer
 	return c
 }
 
-// SearchAnalzyer sets the analzyer that should be used at search time on analyzed fields
-// Defaults to `analzyer` setting.
-func (c *DatatypeCompletion) SearchAnalzyer(searchAnalzyer string) *DatatypeCompletion {
-	c.searchAnalzyer = searchAnalzyer
+// SearchAnalyzer sets the analyzer that should be used at search time on analyzed fields
+// Defaults to `analyzer` setting.
+func (c *DatatypeCompletion) SearchAnalyzer(searchAnalyzer string) *DatatypeCompletion {
+	c.searchAnalyzer = searchAnalyzer
 	return c
 }
 
@@ -90,8 +90,8 @@ func (c *DatatypeCompletion) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "completion",
-	// 		"analzyer": "simple",
-	// 		"search_analzyer": "standard",
+	// 		"analyzer": "simple",
+	// 		"search_analyzer": "standard",
 	// 		"preserve_separators": true,
 	// 		"preserve_position_increments": true,
 	// 		"max_input_length": 50
@@ -100,11 +100,11 @@ func (c *DatatypeCompletion) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "completion"
 
-	if c.analzyer != "" {
-		options["analzyer"] = c.analzyer
+	if c.analyzer != "" {
+		options["analyzer"] = c.analyzer
 	}
-	if c.searchAnalzyer != "" {
-		options["search_analzyer"] = c.searchAnalzyer
+	if c.searchAnalyzer != "" {
+		options["search_analyzer"] = c.searchAnalyzer
 	}
 	if c.preserveSeparators != nil {
 		options["preserve_separators"] = c.preserveSeparators

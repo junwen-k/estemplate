@@ -26,23 +26,23 @@ func TestDatatypeTextSerialization(t *testing.T) {
 		// #1
 		{
 			desc:        "Include Name with Index and Multi-level Fields.",
-			t:           NewDatatypeText("test").Index(true).Fields(NewDatatypeText("english").Analzyer("english")),
+			t:           NewDatatypeText("test").Index(true).Fields(NewDatatypeText("english").Analyzer("english")),
 			includeName: true,
-			expected:    `{"test":{"fields":{"english":{"analzyer":"english","type":"text"}},"index":true,"type":"text"}}`,
+			expected:    `{"test":{"fields":{"english":{"analyzer":"english","type":"text"}},"index":true,"type":"text"}}`,
 		},
 		// #2
 		{
-			desc:        "Exclude Name with Index and Analzyer.",
-			t:           NewDatatypeText("test").Index(true).Analzyer("standard"),
+			desc:        "Exclude Name with Index and Analyzer.",
+			t:           NewDatatypeText("test").Index(true).Analyzer("standard"),
 			includeName: false,
-			expected:    `{"analzyer":"standard","index":true,"type":"text"}`,
+			expected:    `{"analyzer":"standard","index":true,"type":"text"}`,
 		},
 		// #3
 		{
-			desc:        "Exclude Name with Index, Analzyer and FielddataFrequencyFilter.",
-			t:           NewDatatypeText("test").Index(true).Analzyer("standard").FielddataFrequencyFilter(NewFielddataFrequencyFilter(0.001, 0.1)),
+			desc:        "Exclude Name with Index, Analyzer and FielddataFrequencyFilter.",
+			t:           NewDatatypeText("test").Index(true).Analyzer("standard").FielddataFrequencyFilter(NewFielddataFrequencyFilter(0.001, 0.1)),
 			includeName: false,
-			expected:    `{"analzyer":"standard","fielddata_frequency_filter":{"max":0.1,"min":0.001},"index":true,"type":"text"}`,
+			expected:    `{"analyzer":"standard","fielddata_frequency_filter":{"max":0.1,"min":0.001},"index":true,"type":"text"}`,
 		},
 	}
 	for _, test := range tests {

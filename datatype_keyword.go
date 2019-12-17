@@ -218,7 +218,7 @@ func (k *DatatypeKeyword) Source(includeName bool) (interface{}, error) {
 	// 		"fields": {
 	// 			"field_name": {
 	// 				"type": "text",
-	// 				"analzyer": "standard"
+	// 				"analyzer": "standard"
 	// 			}
 	// 		},
 	// 		"ignore_above": 256,

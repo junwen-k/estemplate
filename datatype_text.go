@@ -16,7 +16,7 @@ type DatatypeText struct {
 	name string
 
 	// fields specific to text datatype
-	analzyer                 string
+	analyzer                 string
 	boost                    *float32
 	eagerGlobalOrdinals      *bool
 	fielddata                *bool
@@ -29,8 +29,8 @@ type DatatypeText struct {
 	norms                    *bool
 	positionIncrementGap     *int
 	store                    *bool
-	searchAnalzyer           string
-	searchQuoteAnalzyer      string
+	searchAnalyzer           string
+	searchQuoteAnalyzer      string
 	similarity               string
 	termVector               string
 }
@@ -48,13 +48,13 @@ func (t *DatatypeText) Name() string {
 	return t.name
 }
 
-// Analzyer sets which analzyer should be used for analzyed string fields.
-// Defaults to default index analzyer, or the "standard" analzyer.
+// Analyzer sets which analyzer should be used for analyzed string fields.
+// Defaults to default index analyzer, or the "standard" analyzer.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/analyzer.html
 // for details.
-func (t *DatatypeText) Analzyer(analzyer string) *DatatypeText {
-	t.analzyer = analzyer
+func (t *DatatypeText) Analyzer(analyzer string) *DatatypeText {
+	t.analyzer = analyzer
 	return t
 }
 
@@ -181,23 +181,23 @@ func (t *DatatypeText) Store(store bool) *DatatypeText {
 	return t
 }
 
-// SearchAnalzyer sets the analzyer that should be used at search time on analyzed fields
-// Defaults to `analzyer` setting.
+// SearchAnalyzer sets the analyzer that should be used at search time on analyzed fields
+// Defaults to `analyzer` setting.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-analyzer.html
 // for details.
-func (t *DatatypeText) SearchAnalzyer(searchAnalzyer string) *DatatypeText {
-	t.searchAnalzyer = searchAnalzyer
+func (t *DatatypeText) SearchAnalyzer(searchAnalyzer string) *DatatypeText {
+	t.searchAnalyzer = searchAnalyzer
 	return t
 }
 
-// SearchQuoteAnalzyer sets the analzyer that should be used at search time when a phrase
-// is encountered. Defaults to `search_analzyer` setting.
+// SearchQuoteAnalyzer sets the analyzer that should be used at search time when a phrase
+// is encountered. Defaults to `search_analyzer` setting.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/analyzer.html#search-quote-analyzer
 // for details.
-func (t *DatatypeText) SearchQuoteAnalzyer(searchQuoteAnalzyer string) *DatatypeText {
-	t.searchQuoteAnalzyer = searchQuoteAnalzyer
+func (t *DatatypeText) SearchQuoteAnalyzer(searchQuoteAnalyzer string) *DatatypeText {
+	t.searchQuoteAnalyzer = searchQuoteAnalyzer
 	return t
 }
 
@@ -215,7 +215,7 @@ func (t *DatatypeText) Similarity(similarity string) *DatatypeText {
 	return t
 }
 
-// TermVector sets whether term vectors should be stored for an analzyed field.
+// TermVector sets whether term vectors should be stored for an analyzed field.
 // Can be set to the following values:
 // "no" - No term vectors are stored.
 // "yes" - Just the terms in the field are stored.
@@ -277,7 +277,7 @@ func (t *DatatypeText) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"name": {
 	// 		"type": "text",
-	// 		"analzyer": "my_analyzer",
+	// 		"analyzer": "my_analyzer",
 	// 		"boost": 2,
 	// 		"eager_global_ordinals": true,
 	// 		"fielddata": true,
@@ -289,7 +289,7 @@ func (t *DatatypeText) Source(includeName bool) (interface{}, error) {
 	// 		"fields": {
 	// 			"field_name": {
 	// 				"type": "text",
-	// 				"analzyer": "standard"
+	// 				"analyzer": "standard"
 	// 			}
 	// 		},
 	// 		"index": true,
@@ -302,8 +302,8 @@ func (t *DatatypeText) Source(includeName bool) (interface{}, error) {
 	// 		"norms": true,
 	// 		"position_increment_gap": 1,
 	// 		"store": true,
-	// 		"search_analzyer": "my_stop_analyzer",
-	// 		"search_quote_analzyer": "my_analyzer",
+	// 		"search_analyzer": "my_stop_analyzer",
+	// 		"search_quote_analyzer": "my_analyzer",
 	// 		"similarity": "BM25",
 	// 		"term_vector": "no"
 	// 	}
@@ -311,8 +311,8 @@ func (t *DatatypeText) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "text"
 
-	if t.analzyer != "" {
-		options["analzyer"] = t.analzyer
+	if t.analyzer != "" {
+		options["analyzer"] = t.analyzer
 	}
 	if t.boost != nil {
 		options["boost"] = t.boost
@@ -366,11 +366,11 @@ func (t *DatatypeText) Source(includeName bool) (interface{}, error) {
 	if t.store != nil {
 		options["store"] = t.store
 	}
-	if t.searchAnalzyer != "" {
-		options["search_analzyer"] = t.searchAnalzyer
+	if t.searchAnalyzer != "" {
+		options["search_analyzer"] = t.searchAnalyzer
 	}
-	if t.searchQuoteAnalzyer != "" {
-		options["search_quote_analzyer"] = t.searchQuoteAnalzyer
+	if t.searchQuoteAnalyzer != "" {
+		options["search_quote_analyzer"] = t.searchQuoteAnalyzer
 	}
 	if t.similarity != "" {
 		options["similarity"] = t.similarity

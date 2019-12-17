@@ -85,7 +85,7 @@ func (n *DatatypeNested) Source(includeName bool) (interface{}, error) {
 	// 		"properties": {
 	// 			"field_name": {
 	// 				"type": "text",
-	// 				"analzyer": "standard"
+	// 				"analyzer": "standard"
 	// 			}
 	// 		}
 	// 	}

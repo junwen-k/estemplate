@@ -18,10 +18,10 @@ func TestDatatypeCompletionSerialization(t *testing.T) {
 	}{
 		// #0
 		{
-			desc:        "Include Name with Analzyer.",
-			c:           NewDatatypeCompletion("test").Analzyer("simple"),
+			desc:        "Include Name with Analyzer.",
+			c:           NewDatatypeCompletion("test").Analyzer("simple"),
 			includeName: true,
-			expected:    `{"test":{"analzyer":"simple","type":"completion"}}`,
+			expected:    `{"test":{"analyzer":"simple","type":"completion"}}`,
 		},
 		// #1
 		{
