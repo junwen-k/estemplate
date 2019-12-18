@@ -4,14 +4,6 @@
 
 package estemplate
 
-// DatatypeOption represents the generic datatype option interface.
-// A datatype option's only purpose is to return the source of the
-// property in a mapping template as a JSON-serializable object.
-// Returning a map[string]interface{} will do.
-type DatatypeOption interface {
-	Source() (interface{}, error)
-}
-
 var (
 	validIndexOptions = []string{"docs", "freqs", "positions", "offsets"}
 	validSimilarity   = []string{"BM25", "classic", "boolean"}

@@ -9,9 +9,6 @@ package estemplate
 // See https://www.elastic.co/guide/en/elasticsearch/reference/current/fielddata.html#field-data-filtering
 // for details.
 type FielddataFrequencyFilter struct {
-	DatatypeOption
-
-	// fields specific to fielddata frequency filter datatype option
 	min            float32
 	max            float32
 	minSegmentSize int

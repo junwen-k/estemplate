@@ -9,9 +9,6 @@ package estemplate
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-date-format.html
 // for details.
 type DateFormat struct {
-	DatatypeOption
-
-	// fields specific to date format datatype option
 	strict bool
 	format string
 }

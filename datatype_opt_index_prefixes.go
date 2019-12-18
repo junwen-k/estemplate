@@ -12,9 +12,6 @@ import "fmt"
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/index-prefixes.html
 // for details.
 type IndexPrefixes struct {
-	DatatypeOption
-
-	// fields specific to index prefixes datatype option
 	minChars int
 	maxChars int
 }
