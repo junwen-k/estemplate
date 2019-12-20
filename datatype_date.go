@@ -153,7 +153,8 @@ func (d *DatatypeDate) Validate(includeName bool) error {
 }
 
 // Source returns the serializable JSON for the source builder.
-func (d *DatatypeDate) Source(includeName bool) (interface{}, error) { // {
+func (d *DatatypeDate) Source(includeName bool) (interface{}, error) {
+	// {
 	// 	"test": {
 	// 		"type": "date",
 	// 		"boost": 2,
