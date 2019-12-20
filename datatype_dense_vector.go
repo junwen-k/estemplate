@@ -12,7 +12,8 @@ import (
 // values. The maximum number of dimensions that can be in a vector should not exceed
 // 1024.
 // ! Experimental and may be changed or removed completely in a future release.
-// See
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/dense-vector.html
 // for details.
 type DatatypeDenseVector struct {
 	Datatype
