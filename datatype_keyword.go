@@ -210,7 +210,7 @@ func (k *DatatypeKeyword) Validate(includeName bool) error {
 // Source returns the serializable JSON for the source builder.
 func (k *DatatypeKeyword) Source(includeName bool) (interface{}, error) {
 	// {
-	// 	"name": {
+	// 	"test": {
 	// 		"type": "keyword",
 	// 		"boost": 2,
 	// 		"doc_values": true,

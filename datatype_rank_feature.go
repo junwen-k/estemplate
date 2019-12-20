@@ -54,7 +54,7 @@ func (f *DatatypeRankFeature) Validate(includeName bool) error {
 // Source returns the serializable JSON for the source builder.
 func (f *DatatypeRankFeature) Source(includeName bool) (interface{}, error) {
 	// {
-	// 	"name": {
+	// 	"test": {
 	// 		"type": "rank_feature",
 	// 		"positive_score_impact": true
 	// 	}

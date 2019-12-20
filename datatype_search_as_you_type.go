@@ -198,7 +198,7 @@ func (t *DatatypeSearchAsYouType) Validate(includeName bool) error {
 // Source returns the serializable JSON for the source builder.
 func (t *DatatypeSearchAsYouType) Source(includeName bool) (interface{}, error) {
 	// {
-	// 	"name": {
+	// 	"test": {
 	// 		"type": "search_as_you_type",
 	// 		"max_shingle_size": 3
 	// 		"analyzer": "my_analyzer",

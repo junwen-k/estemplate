@@ -65,7 +65,7 @@ func (j *DatatypeJoin) Validate(includeName bool) error {
 // Source returns the serializable JSON for the source builder.
 func (j *DatatypeJoin) Source(includeName bool) (interface{}, error) {
 	// {
-	// 	"name": {
+	// 	"test": {
 	// 		"type": "join",
 	// 		"relations": {
 	// 			"question": ["answer", "comment"],

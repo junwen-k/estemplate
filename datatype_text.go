@@ -275,7 +275,7 @@ func (t *DatatypeText) Validate(includeName bool) error {
 // Source returns the serializable JSON for the source builder.
 func (t *DatatypeText) Source(includeName bool) (interface{}, error) {
 	// {
-	// 	"name": {
+	// 	"test": {
 	// 		"type": "text",
 	// 		"analyzer": "my_analyzer",
 	// 		"boost": 2,

@@ -79,7 +79,7 @@ func (n *DatatypeNested) Validate(includeName bool) error {
 // Source returns the serializable JSON for the source builder.
 func (n *DatatypeNested) Source(includeName bool) (interface{}, error) {
 	// {
-	// 	"name": {
+	// 	"test": {
 	// 		"type": "nested",
 	// 		"dynamic": true,
 	// 		"properties": {

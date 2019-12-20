@@ -91,7 +91,7 @@ func (o *DatatypeObject) Validate(includeName bool) error {
 // Source returns the serializable JSON for the source builder.
 func (o *DatatypeObject) Source(includeName bool) (interface{}, error) {
 	// {
-	// 	"name": {
+	// 	"test": {
 	// 		"type": "object",
 	// 		"dynamic": true,
 	// 		"enabled": true,
