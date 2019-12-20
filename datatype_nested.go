@@ -91,7 +91,7 @@ func (n *DatatypeNested) Source(includeName bool) (interface{}, error) {
 	// 	}
 	// }
 	options := make(map[string]interface{})
-	options["type"] = "object"
+	options["type"] = "nested"
 
 	if n.dynamic != nil {
 		options["dynamic"] = n.dynamic

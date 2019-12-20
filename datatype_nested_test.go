@@ -21,21 +21,21 @@ func TestDatatypeNestedSerialization(t *testing.T) {
 			desc:        "Include Name with Dynamic.",
 			n:           NewDatatypeNested("test").Dynamic(true),
 			includeName: true,
-			expected:    `{"test":{"dynamic":true,"type":"object"}}`,
+			expected:    `{"test":{"dynamic":true,"type":"nested"}}`,
 		},
 		// #1
 		{
 			desc:        "Include Name with Dynamic and Properties.",
 			n:           NewDatatypeNested("test").Dynamic(true).Properties(NewDatatypeNested("inner").Dynamic(true)),
 			includeName: true,
-			expected:    `{"test":{"dynamic":true,"properties":{"inner":{"dynamic":true,"type":"object"}},"type":"object"}}`,
+			expected:    `{"test":{"dynamic":true,"properties":{"inner":{"dynamic":true,"type":"nested"}},"type":"nested"}}`,
 		},
 		// #2
 		{
 			desc:        "Exclude Name with Strict and Dynamic.",
 			n:           NewDatatypeNested("test").Strict(true).Dynamic(true),
 			includeName: false,
-			expected:    `{"dynamic":"strict","type":"object"}`,
+			expected:    `{"dynamic":"strict","type":"nested"}`,
 		},
 	}
 	for _, test := range tests {
