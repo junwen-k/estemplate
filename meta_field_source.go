@@ -22,11 +22,14 @@ type MetaFieldSource struct {
 
 // NewMetaFieldSource initializes a NewMetaFieldSource.
 func NewMetaFieldSource() *MetaFieldSource {
-	return &MetaFieldSource{}
+	return &MetaFieldSource{
+		includes: make([]string, 0),
+		excludes: make([]string, 0),
+	}
 }
 
-// Enabled sets whether to disable the `_source` field to prevent incur storage
-// overhead.
+// Enabled sets whether to enable or disable the `_source` field to prevent
+// incur storage overhead.
 func (s *MetaFieldSource) Enabled(enabled bool) *MetaFieldSource {
 	s.enabled = &enabled
 	return s

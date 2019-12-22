@@ -27,7 +27,7 @@ func TestMetaFieldSourceSerialization(t *testing.T) {
 			s:        NewMetaFieldSource().Excludes("meta.description").Excludes("meta.other.*"),
 			expected: `{"_source":{"excludes":["meta.description","meta.other.*"]}}`,
 		},
-		// #1
+		// #2
 		{
 			desc:     "With Enabled.",
 			s:        NewMetaFieldSource().Enabled(false),
