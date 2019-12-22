@@ -41,7 +41,11 @@ func (r *Relation) Children(childrens ...string) *Relation {
 
 // Source returns the serializable JSON for the source builder.
 func (r *Relation) Source(includeName bool) (interface{}, error) {
-	// "parent_1": ["children_1", "children_2"]
+	// {
+	// 	"relations": {
+	// 		"parent_1": ["children_1", "children_2"]
+	// 	}
+	// }
 
 	var value interface{}
 	switch {

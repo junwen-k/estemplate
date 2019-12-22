@@ -13,7 +13,7 @@ type MetaFieldSize struct {
 	enabled *bool
 }
 
-// NewMetaFieldSize initializes a NewMetaFieldSize.
+// NewMetaFieldSize initializes a new MetaFieldSize.
 func NewMetaFieldSize() *MetaFieldSize {
 	return &MetaFieldSize{}
 }

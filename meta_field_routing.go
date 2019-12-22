@@ -13,7 +13,7 @@ type MetaFieldRouting struct {
 	required *bool
 }
 
-// NewMetaFieldRouting initializes a NewMetaFieldRouting.
+// NewMetaFieldRouting initializes a new MetaFieldRouting.
 func NewMetaFieldRouting() *MetaFieldRouting {
 	return &MetaFieldRouting{}
 }

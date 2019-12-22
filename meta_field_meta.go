@@ -18,7 +18,7 @@ type MetaFieldMeta struct {
 	rawJSON string
 }
 
-// NewMetaFieldMeta initializes a NewMetaFieldMeta.
+// NewMetaFieldMeta initializes a new MetaFieldMeta.
 func NewMetaFieldMeta() *MetaFieldMeta {
 	return &MetaFieldMeta{}
 }

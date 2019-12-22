@@ -56,8 +56,10 @@ func (p *IndexPrefixes) Validate() error {
 // Source returns the serializable JSON for the source builder.
 func (p *IndexPrefixes) Source() (interface{}, error) {
 	// {
-	// 	"min_chars": 2,
-	// 	"max_chars": 20,
+	// 	"index_prefixes": {
+	// 		"min_chars": 2,
+	// 		"max_chars": 20
+	// 	}
 	// }
 	source := make(map[string]interface{})
 

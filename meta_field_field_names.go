@@ -13,7 +13,7 @@ type MetaFieldFieldNames struct {
 	enabled *bool
 }
 
-// NewMetaFieldFieldNames initializes a NewMetaFieldFieldNames.
+// NewMetaFieldFieldNames initializes a new MetaFieldFieldNames.
 func NewMetaFieldFieldNames() *MetaFieldFieldNames {
 	return &MetaFieldFieldNames{}
 }
