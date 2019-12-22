@@ -4,7 +4,7 @@
 
 package estemplate
 
-// MetaFieldSize Document size Meta-Field which indexes the size in bytes
+// MetaFieldSize Document source Meta-Field which indexes the size in bytes
 // of the original `_source` field.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/plugins/7.5/mapper-size.html
