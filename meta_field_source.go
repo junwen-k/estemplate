@@ -12,9 +12,6 @@ package estemplate
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-source-field.html
 // for details.
 type MetaFieldSource struct {
-	MetaField
-
-	// fields specific to source meta field
 	enabled  *bool
 	includes []string
 	excludes []string
@@ -56,16 +53,18 @@ func (s *MetaFieldSource) Validate() error {
 
 // Source returns the serializable JSON for the source builder.
 func (s *MetaFieldSource) Source() (interface{}, error) {
-	// "_source": {
-	// 	"enabled": true,
-	// 	"includes": [
-	// 		"*.count",
-	// 		"meta.*"
-	// 	],
-	// 	"excludes": [
-	// 		"meta.description",
-	// 		"meta.other.*"
-	// 	]
+	// {
+	// 	"_source": {
+	// 		"enabled": true,
+	// 		"includes": [
+	// 			"*.count",
+	// 			"meta.*"
+	// 		],
+	// 		"excludes": [
+	// 			"meta.description",
+	// 			"meta.other.*"
+	// 		]
+	// 	}
 	// }
 	options := make(map[string]interface{})
 

@@ -10,9 +10,6 @@ package estemplate
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-field-names-field.html
 // for details.
 type MetaFieldFieldNames struct {
-	MetaField
-
-	// fields specific to field names meta field
 	enabled *bool
 }
 
@@ -37,8 +34,10 @@ func (n *MetaFieldFieldNames) Validate() error {
 
 // Source returns the serializable JSON for the source builder.
 func (n *MetaFieldFieldNames) Source() (interface{}, error) {
-	// "_field_names": {
-	// 	"enabled": true
+	// {
+	// 	"_field_names": {
+	// 		"enabled": true
+	// 	}
 	// }
 	options := make(map[string]interface{})
 

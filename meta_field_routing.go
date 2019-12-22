@@ -10,9 +10,6 @@ package estemplate
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-routing-field.html
 // for details.
 type MetaFieldRouting struct {
-	MetaField
-
-	// fields specific to routing meta field
 	required *bool
 }
 
@@ -35,8 +32,10 @@ func (r *MetaFieldRouting) Validate() error {
 
 // Source returns the serializable JSON for the source builder.
 func (r *MetaFieldRouting) Source() (interface{}, error) {
-	// "_routing": {
-	// 	"required": true
+	// {
+	// 	"_routing": {
+	// 		"required": true
+	// 	}
 	// }
 	options := make(map[string]interface{})
 

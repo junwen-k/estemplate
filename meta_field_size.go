@@ -10,9 +10,6 @@ package estemplate
 // See https://www.elastic.co/guide/en/elasticsearch/plugins/7.5/mapper-size.html
 // for details.
 type MetaFieldSize struct {
-	MetaField
-
-	// fields specific to size meta field
 	enabled *bool
 }
 
@@ -34,8 +31,10 @@ func (s *MetaFieldSize) Validate() error {
 
 // Source returns the serializable JSON for the source builder.
 func (s *MetaFieldSize) Source() (interface{}, error) {
-	// "_size": {
-	// 	"enabled": true
+	// {
+	// 	"_size": {
+	// 		"enabled": true
+	// 	}
 	// }
 	options := make(map[string]interface{})
 

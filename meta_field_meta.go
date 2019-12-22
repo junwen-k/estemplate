@@ -14,9 +14,6 @@ import "encoding/json"
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-meta-field.html
 // for details.
 type MetaFieldMeta struct {
-	MetaField
-
-	// fields specific to meta meta field
 	value   interface{}
 	rawJSON string
 }
@@ -46,11 +43,13 @@ func (m *MetaFieldMeta) Validate() error {
 
 // Source returns the serializable JSON for the source builder.
 func (m *MetaFieldMeta) Source() (interface{}, error) {
-	// "_meta": {
-	// 	"class": "MyApp::User",
-	// 	"version": {
-	// 		"min": "1.0",
-	// 		"max": "1.3"
+	// {
+	// 	"_meta": {
+	// 		"class": "MyApp::User",
+	// 		"version": {
+	// 			"min": "1.0",
+	// 			"max": "1.3"
+	// 		}
 	// 	}
 	// }
 	options := make(map[string]interface{})
