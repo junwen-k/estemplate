@@ -134,7 +134,7 @@ func (s *DatatypeGeoShape) IgnoreZValue(ignoreZValue bool) *DatatypeGeoShape {
 }
 
 // Coerce sets whether if unclosed linear rings in polygons will be automatically closed.
-// Defaults to true.
+// Defaults to false.
 func (s *DatatypeGeoShape) Coerce(coerce bool) *DatatypeGeoShape {
 	s.coerce = &coerce
 	return s
@@ -167,7 +167,8 @@ func (s *DatatypeGeoShape) Source(includeName bool) (interface{}, error) {
 	// 		"orientation": "ccw",
 	// 		"points_only": true,
 	// 		"ignore_malformed": true,
-	// 		"ignore_z_value": true
+	// 		"ignore_z_value": true,
+	// 		"coerce": true
 	// 	}
 	// }
 	options := make(map[string]interface{})
