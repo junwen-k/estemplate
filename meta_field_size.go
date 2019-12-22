@@ -30,7 +30,7 @@ func (s *MetaFieldSize) Validate() error {
 }
 
 // Source returns the serializable JSON for the source builder.
-func (s *MetaFieldSize) Source() (interface{}, error) {
+func (s *MetaFieldSize) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"_size": {
 	// 		"enabled": true
@@ -40,6 +40,10 @@ func (s *MetaFieldSize) Source() (interface{}, error) {
 
 	if s.enabled != nil {
 		options["enabled"] = s.enabled
+	}
+
+	if !includeName {
+		return options, nil
 	}
 
 	source := make(map[string]interface{})

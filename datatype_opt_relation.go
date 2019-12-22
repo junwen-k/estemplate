@@ -46,6 +46,7 @@ func (r *Relation) Source(includeName bool) (interface{}, error) {
 	// 		"parent_1": ["children_1", "children_2"]
 	// 	}
 	// }
+	options := make(map[string]interface{})
 
 	var value interface{}
 	switch {
@@ -59,11 +60,13 @@ func (r *Relation) Source(includeName bool) (interface{}, error) {
 		value = ""
 	}
 
+	options[r.parent] = value
+
 	if !includeName {
-		return value, nil
+		return options, nil
 	}
 
 	source := make(map[string]interface{})
-	source[r.parent] = value
+	source["relations"] = options
 	return source, nil
 }

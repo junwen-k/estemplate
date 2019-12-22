@@ -324,7 +324,7 @@ func (t *DatatypeText) Source(includeName bool) (interface{}, error) {
 		options["fielddata"] = t.fielddata
 	}
 	if t.fielddataFrequencyFilter != nil {
-		fielddataFrequencyFilter, err := t.fielddataFrequencyFilter.Source()
+		fielddataFrequencyFilter, err := t.fielddataFrequencyFilter.Source(false)
 		if err != nil {
 			return nil, err
 		}
@@ -348,7 +348,7 @@ func (t *DatatypeText) Source(includeName bool) (interface{}, error) {
 		options["index_options"] = t.indexOptions
 	}
 	if t.indexPrefixes != nil {
-		indexPrefixes, err := t.indexPrefixes.Source()
+		indexPrefixes, err := t.indexPrefixes.Source(false)
 		if err != nil {
 			return nil, err
 		}

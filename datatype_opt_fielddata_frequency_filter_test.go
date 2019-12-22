@@ -11,26 +11,29 @@ import (
 
 func TestFielddataFrequencyFilterSerialization(t *testing.T) {
 	tests := []struct {
-		desc     string
-		f        *FielddataFrequencyFilter
-		expected string
+		desc        string
+		f           *FielddataFrequencyFilter
+		includeName bool
+		expected    string
 	}{
 		// #0
 		{
-			desc:     "Without MinSegmentSize.",
-			f:        NewFielddataFrequencyFilter(0.001, 0.1),
-			expected: `{"max":0.1,"min":0.001}`,
+			desc:        "Include Name without MinSegmentSize.",
+			f:           NewFielddataFrequencyFilter(0.001, 0.1),
+			includeName: true,
+			expected:    `{"fielddata_frequency_filter":{"max":0.1,"min":0.001}}`,
 		},
 		// #1
 		{
-			desc:     "With MinSegmentSize.",
-			f:        NewFielddataFrequencyFilter(0.001, 0.1).MinSegmentSize(1),
-			expected: `{"max":0.1,"min":0.001,"min_segment_size":1}`,
+			desc:        "Exclude Name with MinSegmentSize.",
+			f:           NewFielddataFrequencyFilter(0.001, 0.1).MinSegmentSize(1),
+			includeName: false,
+			expected:    `{"max":0.1,"min":0.001,"min_segment_size":1}`,
 		},
 	}
 	for _, test := range tests {
 		t.Run(test.desc, func(t *testing.T) {
-			src, err := test.f.Source()
+			src, err := test.f.Source(test.includeName)
 			if err != nil {
 				t.Fatal(err)
 			}

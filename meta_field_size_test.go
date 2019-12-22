@@ -11,26 +11,29 @@ import (
 
 func TestMetaFieldSizeSerialization(t *testing.T) {
 	tests := []struct {
-		desc     string
-		s        *MetaFieldSize
-		expected string
+		desc        string
+		s           *MetaFieldSize
+		includeName bool
+		expected    string
 	}{
 		// #0
 		{
-			desc:     "Without Enabled.",
-			s:        NewMetaFieldSize(),
-			expected: `{"_size":{}}`,
+			desc:        "Include Name without Enabled.",
+			s:           NewMetaFieldSize(),
+			includeName: true,
+			expected:    `{"_size":{}}`,
 		},
 		// #1
 		{
-			desc:     "With Enabled.",
-			s:        NewMetaFieldSize().Enabled(true),
-			expected: `{"_size":{"enabled":true}}`,
+			desc:        "Exclude Name With Enabled.",
+			s:           NewMetaFieldSize().Enabled(true),
+			includeName: false,
+			expected:    `{"enabled":true}`,
 		},
 	}
 	for _, test := range tests {
 		t.Run(test.desc, func(t *testing.T) {
-			src, err := test.s.Source()
+			src, err := test.s.Source(test.includeName)
 			if err != nil {
 				t.Fatal(err)
 			}

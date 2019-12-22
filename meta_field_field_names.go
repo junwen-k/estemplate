@@ -33,7 +33,7 @@ func (n *MetaFieldFieldNames) Validate() error {
 }
 
 // Source returns the serializable JSON for the source builder.
-func (n *MetaFieldFieldNames) Source() (interface{}, error) {
+func (n *MetaFieldFieldNames) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"_field_names": {
 	// 		"enabled": true
@@ -43,6 +43,10 @@ func (n *MetaFieldFieldNames) Source() (interface{}, error) {
 
 	if n.enabled != nil {
 		options["enabled"] = n.enabled
+	}
+
+	if !includeName {
+		return options, nil
 	}
 
 	source := make(map[string]interface{})

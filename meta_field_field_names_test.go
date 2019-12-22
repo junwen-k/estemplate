@@ -11,26 +11,29 @@ import (
 
 func TestMetaFieldFieldNamesSerialization(t *testing.T) {
 	tests := []struct {
-		desc     string
-		n        *MetaFieldFieldNames
-		expected string
+		desc        string
+		n           *MetaFieldFieldNames
+		includeName bool
+		expected    string
 	}{
 		// #0
 		{
-			desc:     "Without Enabled.",
-			n:        NewMetaFieldFieldNames(),
-			expected: `{"_field_names":{}}`,
+			desc:        "Include Name without Enabled.",
+			n:           NewMetaFieldFieldNames(),
+			includeName: true,
+			expected:    `{"_field_names":{}}`,
 		},
 		// #1
 		{
-			desc:     "With Enabled.",
-			n:        NewMetaFieldFieldNames().Enabled(true),
-			expected: `{"_field_names":{"enabled":true}}`,
+			desc:        "Exclude Name with Enabled.",
+			n:           NewMetaFieldFieldNames().Enabled(true),
+			includeName: false,
+			expected:    `{"enabled":true}`,
 		},
 	}
 	for _, test := range tests {
 		t.Run(test.desc, func(t *testing.T) {
-			src, err := test.n.Source()
+			src, err := test.n.Source(test.includeName)
 			if err != nil {
 				t.Fatal(err)
 			}

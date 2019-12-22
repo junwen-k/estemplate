@@ -11,13 +11,14 @@ import (
 
 func TestMetaFieldMetaSerialization(t *testing.T) {
 	tests := []struct {
-		desc     string
-		m        *MetaFieldMeta
-		expected string
+		desc        string
+		m           *MetaFieldMeta
+		includeName bool
+		expected    string
 	}{
 		// #0
 		{
-			desc: "With structure Value.",
+			desc: "Include Name with structure Value.",
 			m: NewMetaFieldMeta().Value(&struct {
 				Class   string `json:"class"`
 				Version struct {
@@ -34,11 +35,12 @@ func TestMetaFieldMetaSerialization(t *testing.T) {
 					Max: "1.3",
 				},
 			}),
-			expected: `{"_meta":{"class":"MyApp::User","version":{"max":"1.3","min":"1.0"}}}`,
+			includeName: true,
+			expected:    `{"_meta":{"class":"MyApp::User","version":{"max":"1.3","min":"1.0"}}}`,
 		},
 		// #1
 		{
-			desc: "With map Value.",
+			desc: "Include Name with map Value.",
 			m: NewMetaFieldMeta().Value(map[string]interface{}{
 				"class": "MyApp::User",
 				"version": map[string]interface{}{
@@ -46,11 +48,12 @@ func TestMetaFieldMetaSerialization(t *testing.T) {
 					"min": "1.0",
 				},
 			}),
-			expected: `{"_meta":{"class":"MyApp::User","version":{"max":"1.3","min":"1.0"}}}`,
+			includeName: true,
+			expected:    `{"_meta":{"class":"MyApp::User","version":{"max":"1.3","min":"1.0"}}}`,
 		},
 		// #2
 		{
-			desc: "With RawJSON.",
+			desc: "Include Name with RawJSON.",
 			m: NewMetaFieldMeta().RawJSON(`
 				{
 					"class": "MyApp::User",
@@ -60,11 +63,12 @@ func TestMetaFieldMetaSerialization(t *testing.T) {
 					}
 				}
 			`),
-			expected: `{"_meta":{"class":"MyApp::User","version":{"max":"1.3","min":"1.0"}}}`,
+			includeName: true,
+			expected:    `{"_meta":{"class":"MyApp::User","version":{"max":"1.3","min":"1.0"}}}`,
 		},
 		// #3
 		{
-			desc: "With Value and RawJSON, RawJSON should overwrite value.",
+			desc: "Exclude Name with Value and RawJSON, RawJSON should overwrite value.",
 			m: NewMetaFieldMeta().Value(map[string]interface{}{
 				"class": "MyApp::User",
 				"version": map[string]interface{}{
@@ -81,12 +85,13 @@ func TestMetaFieldMetaSerialization(t *testing.T) {
 					}
 				}
 			`),
-			expected: `{"_meta":{"class":"MyApp::User","version":{"max":"1.3","min":"1.0"}}}`,
+			includeName: false,
+			expected:    `{"class":"MyApp::User","version":{"max":"1.3","min":"1.0"}}`,
 		},
 	}
 	for _, test := range tests {
 		t.Run(test.desc, func(t *testing.T) {
-			src, err := test.m.Source()
+			src, err := test.m.Source(test.includeName)
 			if err != nil {
 				t.Fatal(err)
 			}

@@ -17,7 +17,7 @@ type MetaFieldSource struct {
 	excludes []string
 }
 
-// NewMetaFieldSource initializes a NewMetaFieldSource.
+// NewMetaFieldSource initializes a new MetaFieldSource.
 func NewMetaFieldSource() *MetaFieldSource {
 	return &MetaFieldSource{
 		includes: make([]string, 0),
@@ -52,7 +52,7 @@ func (s *MetaFieldSource) Validate() error {
 }
 
 // Source returns the serializable JSON for the source builder.
-func (s *MetaFieldSource) Source() (interface{}, error) {
+func (s *MetaFieldSource) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"_source": {
 	// 		"enabled": true,
@@ -76,6 +76,10 @@ func (s *MetaFieldSource) Source() (interface{}, error) {
 	}
 	if len(s.excludes) > 0 {
 		options["excludes"] = s.excludes
+	}
+
+	if !includeName {
+		return options, nil
 	}
 
 	source := make(map[string]interface{})

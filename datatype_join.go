@@ -84,7 +84,9 @@ func (j *DatatypeJoin) Source(includeName bool) (interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
-			relations[r.Name()] = relation
+			for parent, value := range relation.(map[string]interface{}) {
+				relations[parent] = value
+			}
 		}
 		options["relations"] = relations
 	}

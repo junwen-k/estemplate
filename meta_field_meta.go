@@ -42,7 +42,7 @@ func (m *MetaFieldMeta) Validate() error {
 }
 
 // Source returns the serializable JSON for the source builder.
-func (m *MetaFieldMeta) Source() (interface{}, error) {
+func (m *MetaFieldMeta) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"_meta": {
 	// 		"class": "MyApp::User",
@@ -73,6 +73,10 @@ func (m *MetaFieldMeta) Source() (interface{}, error) {
 		if err != nil {
 			return nil, err
 		}
+	}
+
+	if !includeName {
+		return options, nil
 	}
 
 	source := make(map[string]interface{})

@@ -11,26 +11,29 @@ import (
 
 func TestIndexPrefixesSerialization(t *testing.T) {
 	tests := []struct {
-		desc     string
-		p        *IndexPrefixes
-		expected string
+		desc        string
+		p           *IndexPrefixes
+		includeName bool
+		expected    string
 	}{
 		// #0
 		{
-			desc:     "With MaxChars and MinChars.",
-			p:        NewIndexPrefixes(2, 5),
-			expected: `{"max_chars":5,"min_chars":2}`,
+			desc:        "Include Name with MaxChars and MinChars.",
+			p:           NewIndexPrefixes(2, 5),
+			includeName: true,
+			expected:    `{"index_prefixes":{"max_chars":5,"min_chars":2}}`,
 		},
 		// #1
 		{
-			desc:     "With modified MinChars.",
-			p:        NewIndexPrefixes(2, 5).MinChars(1),
-			expected: `{"max_chars":5,"min_chars":1}`,
+			desc:        "Exclude Name with modified MinChars.",
+			p:           NewIndexPrefixes(2, 5).MinChars(1),
+			includeName: false,
+			expected:    `{"max_chars":5,"min_chars":1}`,
 		},
 	}
 	for _, test := range tests {
 		t.Run(test.desc, func(t *testing.T) {
-			src, err := test.p.Source()
+			src, err := test.p.Source(test.includeName)
 			if err != nil {
 				t.Fatal(err)
 			}

@@ -31,7 +31,7 @@ func (r *MetaFieldRouting) Validate() error {
 }
 
 // Source returns the serializable JSON for the source builder.
-func (r *MetaFieldRouting) Source() (interface{}, error) {
+func (r *MetaFieldRouting) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"_routing": {
 	// 		"required": true
@@ -41,6 +41,10 @@ func (r *MetaFieldRouting) Source() (interface{}, error) {
 
 	if r.required != nil {
 		options["required"] = r.required
+	}
+
+	if !includeName {
+		return options, nil
 	}
 
 	source := make(map[string]interface{})

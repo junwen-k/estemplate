@@ -21,21 +21,21 @@ func TestRelationSerialization(t *testing.T) {
 			desc:        "Include Name without children.",
 			r:           NewRelation("parent"),
 			includeName: true,
-			expected:    `{"parent":""}`,
+			expected:    `{"relations":{"parent":""}}`,
 		},
 		// #1
 		{
 			desc:        "Exclude Name with one children.",
 			r:           NewRelation("parent", "children_1"),
 			includeName: false,
-			expected:    `"children_1"`,
+			expected:    `{"parent":"children_1"}`,
 		},
 		// #2
 		{
 			desc:        "Exclude Name with multiple childrens.",
 			r:           NewRelation("parent", "children_1", "children_2").Children("children_3"),
 			includeName: false,
-			expected:    `["children_1","children_2","children_3"]`,
+			expected:    `{"parent":["children_1","children_2","children_3"]}`,
 		},
 	}
 	for _, test := range tests {

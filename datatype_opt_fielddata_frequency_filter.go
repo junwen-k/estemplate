@@ -41,23 +41,31 @@ func (f *FielddataFrequencyFilter) MinSegmentSize(minSegmentSize int) *Fielddata
 }
 
 // Source returns the serializable JSON for the source builder.
-func (f *FielddataFrequencyFilter) Source() (interface{}, error) {
+func (f *FielddataFrequencyFilter) Source(includeName bool) (interface{}, error) {
 	// {
-	// 	"min": 0.001,
-	// 	"max": 0.1,
-	// 	"min_segment_size": 500
+	// 	"fielddata_frequency_filter": {
+	// 		"min": 0.001,
+	// 		"max": 0.1,
+	// 		"min_segment_size": 500
+	// 	}
 	// }
-	source := make(map[string]interface{})
+	options := make(map[string]interface{})
 
 	if f.min > 0 {
-		source["min"] = f.min
+		options["min"] = f.min
 	}
 	if f.max > 0 {
-		source["max"] = f.max
+		options["max"] = f.max
 	}
 	if f.minSegmentSize > 0 {
-		source["min_segment_size"] = f.minSegmentSize
+		options["min_segment_size"] = f.minSegmentSize
 	}
 
+	if !includeName {
+		return options, nil
+	}
+
+	source := make(map[string]interface{})
+	source["fielddata_frequency_filter"] = options
 	return source, nil
 }
