@@ -153,6 +153,7 @@ func (d *DatatypeDateNanoseconds) Validate(includeName bool) error {
 
 // Source returns the serializable JSON for the source builder.
 func (d *DatatypeDateNanoseconds) Source(includeName bool) (interface{}, error) {
+	// {
 	// 	"test": {
 	// 		"type": "date_nanos",
 	// 		"boost": 2,
