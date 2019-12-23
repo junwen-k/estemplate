@@ -48,19 +48,20 @@ func (r *Relation) Source(includeName bool) (interface{}, error) {
 	// }
 	options := make(map[string]interface{})
 
-	var value interface{}
-	switch {
-	case len(r.children) > 1:
-		value = r.children
-		break
-	case len(r.children) == 1:
-		value = r.children[0]
-		break
-	default:
-		value = ""
+	if len(r.children) > 0 {
+		var value interface{}
+		switch {
+		case len(r.children) > 1:
+			value = r.children
+			break
+		case len(r.children) == 1:
+			value = r.children[0]
+			break
+		default:
+			value = ""
+		}
+		options[r.parent] = value
 	}
-
-	options[r.parent] = value
 
 	if !includeName {
 		return options, nil

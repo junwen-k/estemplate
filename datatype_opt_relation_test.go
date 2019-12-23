@@ -21,7 +21,7 @@ func TestRelationSerialization(t *testing.T) {
 			desc:        "Include Name without children.",
 			r:           NewRelation("parent"),
 			includeName: true,
-			expected:    `{"relations":{"parent":""}}`,
+			expected:    `{"relations":{}}`,
 		},
 		// #1
 		{
