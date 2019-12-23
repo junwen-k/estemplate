@@ -13,6 +13,7 @@ import "fmt"
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/analysis-standard-analyzer.html
 // for details.
 type AnalyzerStandard struct {
+	Analyzer
 	name string
 
 	// fields specific to standard analyzer
