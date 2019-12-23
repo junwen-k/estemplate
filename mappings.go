@@ -16,9 +16,6 @@ import "fmt"
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping.html
 // for details.
 type Mappings struct {
-
-	// fields specific to mappings
-
 	// dynamic templates
 	dynamicTemplates []*DynamicTemplate
 
