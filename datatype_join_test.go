@@ -32,7 +32,7 @@ func TestDatatypeJoinSerialization(t *testing.T) {
 		},
 		// #2
 		{
-			desc:        "Exclude Name with Multiple Relations.",
+			desc:        "Exclude Name with multiple Relations.",
 			j:           NewDatatypeJoin("test").Relations(NewRelation("parent_1", "children_1", "children_2"), NewRelation("children_1").Children("children_3")),
 			includeName: false,
 			expected:    `{"relations":{"children_1":"children_3","parent_1":["children_1","children_2"]},"type":"join"}`,
