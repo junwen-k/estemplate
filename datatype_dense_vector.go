@@ -4,9 +4,7 @@
 
 package estemplate
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // DatatypeDenseVector Specialised Datatype that stores dense vectors of float
 // values. The maximum number of dimensions that can be in a vector should not exceed
