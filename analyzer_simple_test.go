@@ -12,28 +12,28 @@ import (
 func TestAnalyzerSimpleSerialization(t *testing.T) {
 	tests := []struct {
 		desc        string
-		m3          *AnalyzerSimple
+		s           *AnalyzerSimple
 		includeName bool
 		expected    string
 	}{
 		// #0
 		{
 			desc:        "Include Name.",
-			m3:          NewAnalyzerSimple("test"),
+			s:           NewAnalyzerSimple("test"),
 			includeName: true,
 			expected:    `{"test":{"type":"simple"}}`,
 		},
 		// #1
 		{
 			desc:        "Exclude Name.",
-			m3:          NewAnalyzerSimple("test"),
+			s:           NewAnalyzerSimple("test"),
 			includeName: false,
 			expected:    `{"type":"simple"}`,
 		},
 	}
 	for _, test := range tests {
 		t.Run(test.desc, func(t *testing.T) {
-			src, err := test.m3.Source(test.includeName)
+			src, err := test.s.Source(test.includeName)
 			if err != nil {
 				t.Fatal(err)
 			}

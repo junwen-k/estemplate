@@ -7,7 +7,7 @@ package estemplate
 import "fmt"
 
 // AnalyzerSimple divdes text into terms whenever it encounters any whitespace
-// character. It does not lowercase terms.
+// character. It lowercases all terms.
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/analysis-simple-analyzer.html
 // for details.
