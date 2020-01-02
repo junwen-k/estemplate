@@ -41,12 +41,18 @@ func (p *AnalyzerPattern) Name() string {
 
 // Pattern sets the Java regular expression for the analyzer.
 // Defaults to `\W+`.
+//
+// See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
+// for details.
 func (p *AnalyzerPattern) Pattern(pattern string) *AnalyzerPattern {
 	p.pattern = pattern
 	return p
 }
 
 // Flags sets Java regular expression flags. eg "CASE_INSENSITIVE|COMMENTS".
+//
+// See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#field.summary
+// for details.
 func (p *AnalyzerPattern) Flags(flags ...string) *AnalyzerPattern {
 	p.flags = append(p.flags, flags...)
 	return p
