@@ -32,6 +32,11 @@ func NewTokenizerPattern(name string) *TokenizerPattern {
 	}
 }
 
+// Name returns field key for the Tokenizer.
+func (p *TokenizerPattern) Name() string {
+	return p.name
+}
+
 // Pattern sets the Java regular expression for the tokenizer.
 // Defaults to `\W+`.
 //
@@ -56,11 +61,6 @@ func (p *TokenizerPattern) Flags(flags ...string) *TokenizerPattern {
 func (p *TokenizerPattern) Group(group int) *TokenizerPattern {
 	p.group = &group
 	return p
-}
-
-// Name returns field key for the Tokenizer.
-func (p *TokenizerPattern) Name() string {
-	return p.name
 }
 
 // Validate validates TokenizerPattern.
