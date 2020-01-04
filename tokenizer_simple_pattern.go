@@ -1,4 +1,4 @@
-// Copyright (p) KwanJunWen
+// Copyright (c) KwanJunWen
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 
@@ -25,6 +25,11 @@ func NewTokenizerSimplePattern(name string) *TokenizerSimplePattern {
 	return &TokenizerSimplePattern{
 		name: name,
 	}
+}
+
+// Name returns field key for the Tokenizer.
+func (p *TokenizerSimplePattern) Name() string {
+	return p.name
 }
 
 // Pattern sets the Lucene regular expression for the tokenizer, pattern should be always
