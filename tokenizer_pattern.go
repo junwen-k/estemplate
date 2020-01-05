@@ -28,7 +28,8 @@ type TokenizerPattern struct {
 // NewTokenizerPattern initializes a new TokenizerPattern.
 func NewTokenizerPattern(name string) *TokenizerPattern {
 	return &TokenizerPattern{
-		name: name,
+		name:  name,
+		flags: make([]string, 0),
 	}
 }
 

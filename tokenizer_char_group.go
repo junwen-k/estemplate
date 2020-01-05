@@ -23,7 +23,8 @@ type TokenizerCharGroup struct {
 // NewTokenizerCharGroup initializes a new TokenizerCharGroup.
 func NewTokenizerCharGroup(name string) *TokenizerCharGroup {
 	return &TokenizerCharGroup{
-		name: name,
+		name:            name,
+		tokenizeOnChars: make([]string, 0),
 	}
 }
 

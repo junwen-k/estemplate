@@ -26,7 +26,8 @@ type TokenizerNGram struct {
 // NewTokenizerNGram initializes a new TokenizerNGram.
 func NewTokenizerNGram(name string) *TokenizerNGram {
 	return &TokenizerNGram{
-		name: name,
+		name:       name,
+		tokenChars: make([]string, 0),
 	}
 }
 
@@ -61,11 +62,11 @@ func (n *TokenizerNGram) MaxGram(maxGram int) *TokenizerNGram {
 // Elasticsearch will split on characters that don't belong to the classes
 // specified.
 // Can be set to the following values:
-// - letter. ex: (a / b / ï / 京)
-// - digit. ex: (3 / 7)
-// - whitespace. ex: (" " / "\n")
-// - punctuation. ex: (! / ")
-// - symbol. ex: ($ / √)
+// letter - ex: (a / b / ï / 京)
+// digit - ex: (3 / 7)
+// whitespace - ex: (" " / "\n")
+// punctuation - ex: (! / ")
+// symbol - ex: ($ / √)
 //
 // Defaults to [] (keep all characters).
 func (n *TokenizerNGram) TokenChars(tokenChars ...string) *TokenizerNGram {

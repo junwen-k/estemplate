@@ -26,7 +26,8 @@ type TokenizerEdgeNGram struct {
 // NewTokenizerEdgeNGram initializes a new TokenizerEdgeNGram.
 func NewTokenizerEdgeNGram(name string) *TokenizerEdgeNGram {
 	return &TokenizerEdgeNGram{
-		name: name,
+		name:       name,
+		tokenChars: make([]string, 0),
 	}
 }
 
@@ -57,11 +58,11 @@ func (e *TokenizerEdgeNGram) MaxGram(maxGram int) *TokenizerEdgeNGram {
 // Elasticsearch will split on characters that don't belong to the classes
 // specified.
 // Can be set to the following values:
-// - letter. ex: (a / b / ï / 京)
-// - digit. ex: (3 / 7)
-// - whitespace. ex: (" " / "\n")
-// - punctuation. ex: (! / ")
-// - symbol. ex: ($ / √)
+// letter - ex: (a / b / ï / 京)
+// digit - ex: (3 / 7)
+// whitespace - ex: (" " / "\n")
+// punctuation - ex: (! / ")
+// symbol - ex: ($ / √)
 //
 // Defaults to [] (keep all characters).
 func (e *TokenizerEdgeNGram) TokenChars(tokenChars ...string) *TokenizerEdgeNGram {
