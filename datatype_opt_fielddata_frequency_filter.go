@@ -6,7 +6,7 @@ package estemplate
 
 // FielddataFrequencyFilter Datatype parameter to reduce the number of terms loaded into memory.
 //
-// See https://www.elastic.co/guide/en/elasticsearch/reference/current/fielddata.html#field-data-filtering
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/fielddata.html#field-data-filtering
 // for details.
 type FielddataFrequencyFilter struct {
 	min            float32
