@@ -40,7 +40,7 @@ func (d *TokenFilterDictionaryDecompounder) Name() string {
 
 // WordList sets a list of subwords to look for in the token stream. If found, the subword is included
 // in the token output.
-// Either this parameter or `word_list_path` must be specified.
+// Either this or `word_list_path` parameter must be specified.
 func (d *TokenFilterDictionaryDecompounder) WordList(wordList ...string) *TokenFilterDictionaryDecompounder {
 	d.wordList = append(d.wordList, wordList...)
 	return d
@@ -49,7 +49,7 @@ func (d *TokenFilterDictionaryDecompounder) WordList(wordList ...string) *TokenF
 // WordListPath sets a path to a file containing a list of subwords to find in the token stream. If found,
 // the subword is included in the token output. This path must be absolute or relative to the `config`
 // location. The file must be UTF-8 encoded. Each token in the file must be separated by a line break.
-// Either this parameter or `word_list` must be specified.
+// Either this or `word_list` parameter must be specified.
 func (d *TokenFilterDictionaryDecompounder) WordListPath(wordListPath string) *TokenFilterDictionaryDecompounder {
 	d.wordListPath = wordListPath
 	return d
