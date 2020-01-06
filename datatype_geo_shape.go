@@ -80,11 +80,11 @@ func (s *DatatypeGeoShape) TreeLevels(treeLevels string) *DatatypeGeoShape {
 // Can be set to the following values:
 // "recursive" - supports all shape types.
 // "term" - supports `points_only` (the `points_only` parameter will be automatically set to true).
-// ! Both strategies are deprecated and will be removed in a future version.
 // Defaults to "recursive".
 //
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/geo-shape.html#prefix-trees
 // for details.
+// ! Both strategies are deprecated and will be removed in a future version.
 func (s *DatatypeGeoShape) Strategy(strategy string) *DatatypeGeoShape {
 	s.strategy = strategy
 	return s
