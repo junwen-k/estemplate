@@ -25,7 +25,8 @@ type TokenFilterPhoneticBeiderMorse struct {
 // NewTokenFilterPhoneticBeiderMorse initializes a new TokenFilterPhoneticBeiderMorse.
 func NewTokenFilterPhoneticBeiderMorse(name string) *TokenFilterPhoneticBeiderMorse {
 	return &TokenFilterPhoneticBeiderMorse{
-		name: name,
+		name:        name,
+		languageset: make([]string, 0),
 	}
 }
 
