@@ -63,7 +63,7 @@ func (r *TokenFilterPatternReplace) Source(includeName bool) (interface{}, error
 	// 	"test": {
 	// 		"type": "pattern_replace",
 	// 		"pattern": "\\",
-	// 		"replacement": "+",
+	// 		"replacement": "+"
 	// 	}
 	// }
 	options := make(map[string]interface{})
