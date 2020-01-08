@@ -178,11 +178,11 @@ func (d *DatatypeDateNanoseconds) Source(includeName bool) (interface{}, error) 
 	if len(d.format) > 0 {
 		formats := make([]string, 0)
 		for _, f := range d.format {
-			f, err := f.Source()
+			format, err := f.Source()
 			if err != nil {
 				return nil, err
 			}
-			formats = append(formats, fmt.Sprintf("%s", f))
+			formats = append(formats, fmt.Sprintf("%s", format))
 		}
 		options["format"] = strings.Join(formats, "||")
 	}
