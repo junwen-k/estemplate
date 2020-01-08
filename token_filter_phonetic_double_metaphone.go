@@ -55,7 +55,7 @@ func (p *TokenFilterPhoneticDoubleMetaphone) Validate(includeName bool) error {
 		invalid = append(invalid, "Name")
 	}
 	if len(invalid) > 0 {
-		return fmt.Errorf("missing required fields or invalid values: %v", invalid)
+		return fmt.Errorf("missing required fields: %v", invalid)
 	}
 	return nil
 }
