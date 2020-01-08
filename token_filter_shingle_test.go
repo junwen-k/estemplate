@@ -25,7 +25,7 @@ func TestTokenFilterShingleSerialization(t *testing.T) {
 		},
 		// #1
 		{
-			desc:        "Exclude Name.",
+			desc:        "Exclude Name with OutputUnigrams, OutputUnigramsIfNoShingles and FilterToken.",
 			p:           NewTokenFilterShingle("test").OutputUnigrams(true).OutputUnigramsIfNoShingles(true).FilterToken("_"),
 			includeName: false,
 			expected:    `{"filter_token":"_","output_unigrams":true,"output_unigrams_if_no_shingles":true,"type":"shingle"}`,
