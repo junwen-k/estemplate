@@ -12,14 +12,14 @@ import (
 func TestTokenFilterWordDelimiterSerialization(t *testing.T) {
 	tests := []struct {
 		desc        string
-		u           *TokenFilterWordDelimiter
+		d           *TokenFilterWordDelimiter
 		includeName bool
 		expected    string
 	}{
 		// #0
 		{
 			desc: "Include Name with GenerateWordParts, GenerateNumberParts, CatenateWords, CatenateNumbers, CatenateAll, SplitOnCaseChange, PreserveOriginal, SplitOnNumerics and StemEnglishPossessive.",
-			u: NewTokenFilterWordDelimiter("test").GenerateWordParts(true).GenerateNumberParts(true).
+			d: NewTokenFilterWordDelimiter("test").GenerateWordParts(true).GenerateNumberParts(true).
 				CatenateWords(true).CatenateNumbers(true).CatenateAll(true).
 				SplitOnCaseChange(true).PreserveOriginal(true).SplitOnNumerics(true).
 				StemEnglishPossessive(true),
@@ -29,14 +29,14 @@ func TestTokenFilterWordDelimiterSerialization(t *testing.T) {
 		// #1
 		{
 			desc:        "Exclude Name with ProtectedWords and TypeTablePath.",
-			u:           NewTokenFilterWordDelimiter("test").ProtectedWords("hello", "world").TypeTablePath("analysis/type_table.txt"),
+			d:           NewTokenFilterWordDelimiter("test").ProtectedWords("hello", "world").TypeTablePath("analysis/type_table.txt"),
 			includeName: false,
 			expected:    `{"protected_words":["hello","world"],"type":"word_delimiter","type_table_path":"analysis/type_table.txt"}`,
 		},
 	}
 	for _, test := range tests {
 		t.Run(test.desc, func(t *testing.T) {
-			src, err := test.u.Source(test.includeName)
+			src, err := test.d.Source(test.includeName)
 			if err != nil {
 				t.Fatal(err)
 			}
