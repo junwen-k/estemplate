@@ -48,7 +48,7 @@ func (s *DatatypeGeoShape) Name() string {
 // "quadtree" - QuadPrefixTree.
 // * This parameter is only relevant for `term` and `recursive` strategies.
 // Defaults to "quadtree".
-// ! Deprecated in 6.6. PrefixTrees no longer used
+// ! Deprecated in 6.6. PrefixTrees no longer used.
 func (s *DatatypeGeoShape) Tree(tree string) *DatatypeGeoShape {
 	s.tree = tree
 	return s
@@ -59,7 +59,7 @@ func (s *DatatypeGeoShape) Tree(tree string) *DatatypeGeoShape {
 // best tree_levels value to honor this precision.
 // * This parameter is only relevant for `term` and `recursive` strategies.
 // Defaults to "50m".
-// ! Deprecated in 6.6. PrefixTrees no longer used
+// ! Deprecated in 6.6. PrefixTrees no longer used.
 func (s *DatatypeGeoShape) Precision(precision string) *DatatypeGeoShape {
 	s.precision = precision
 	return s
@@ -70,7 +70,7 @@ func (s *DatatypeGeoShape) Precision(precision string) *DatatypeGeoShape {
 // how many terms are indexed.
 // * This parameter is only relevant for `term` and `recursive` strategies.
 // Defaults to "various".
-// ! Deprecated in 6.6. PrefixTrees no longer used
+// ! Deprecated in 6.6. PrefixTrees no longer used.
 func (s *DatatypeGeoShape) TreeLevels(treeLevels string) *DatatypeGeoShape {
 	s.treeLevels = treeLevels
 	return s
@@ -93,7 +93,7 @@ func (s *DatatypeGeoShape) Strategy(strategy string) *DatatypeGeoShape {
 // DistanceErrorPct sets a hint to the PrefixTree about how precise it should be.
 // * This parameter is only relevant for `term` and `recursive` strategies.
 // Defaults to 0.025, or 0 (if `precision` and `tree_level` definition is explicitly defined).
-// ! Deprecated in 6.6. PrefixTrees no longer used
+// ! Deprecated in 6.6. PrefixTrees no longer used.
 func (s *DatatypeGeoShape) DistanceErrorPct(distanceErrorPct float32) *DatatypeGeoShape {
 	s.distanceErrorPct = &distanceErrorPct
 	return s
