@@ -19,11 +19,6 @@ type Script struct {
 	params map[string]interface{}
 }
 
-// MarshalJSON custom marshal JSON function for Script field to disable escape on script.
-func (s *Script) MarshalJSON() ([]byte, error) {
-	return nil, nil
-}
-
 // NewScript initializes a new Script.
 func NewScript(source string) *Script {
 	return &Script{
