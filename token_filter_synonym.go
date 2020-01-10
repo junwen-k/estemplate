@@ -16,7 +16,8 @@ type TokenFilterSynonym struct {
 	name string
 
 	// fields specific to synonym token filter
-	synonyms     []string
+	synonyms     []*MappingRule
+	rawSynonyms  []string
 	synonymsPath string
 	expand       *bool
 	lenient      *bool
@@ -28,8 +29,9 @@ type TokenFilterSynonym struct {
 // NewTokenFilterSynonym initializes a new TokenFilterSynonym.
 func NewTokenFilterSynonym(name string) *TokenFilterSynonym {
 	return &TokenFilterSynonym{
-		name:     name,
-		synonyms: make([]string, 0),
+		name:        name,
+		synonyms:    make([]*MappingRule, 0),
+		rawSynonyms: make([]string, 0),
 	}
 }
 
@@ -39,8 +41,15 @@ func (s *TokenFilterSynonym) Name() string {
 }
 
 // Synonyms sets a list of synonyms to be used for the filter.
-func (s *TokenFilterSynonym) Synonyms(synonyms ...string) *TokenFilterSynonym {
+func (s *TokenFilterSynonym) Synonyms(synonyms ...*MappingRule) *TokenFilterSynonym {
 	s.synonyms = append(s.synonyms, synonyms...)
+	return s
+}
+
+// RawSynonyms sets a list of synonyms to be used for the filter. Use this if you prefer to use
+// strings instead of using MappingRule type.
+func (s *TokenFilterSynonym) RawSynonyms(rawSynonyms ...string) *TokenFilterSynonym {
+	s.rawSynonyms = append(s.rawSynonyms, rawSynonyms...)
 	return s
 }
 
@@ -131,12 +140,34 @@ func (s *TokenFilterSynonym) Source(includeName bool) (interface{}, error) {
 
 	if len(s.synonyms) > 0 {
 		var synonyms interface{}
+		var ss []interface{}
+		for _, syn := range s.synonyms {
+			synonym, err := syn.Source()
+			if err != nil {
+				return nil, err
+			}
+			ss = append(ss, synonym)
+		}
 		switch {
-		case len(s.synonyms) > 1:
-			synonyms = s.synonyms
+		case len(ss) > 1:
+			synonyms = ss
 			break
-		case len(s.synonyms) == 1:
-			synonyms = s.synonyms[0]
+		case len(ss) == 1:
+			synonyms = ss[0]
+			break
+		default:
+			synonyms = ""
+		}
+		options["synonyms"] = synonyms
+	}
+	if len(s.rawSynonyms) > 0 {
+		var synonyms interface{}
+		switch {
+		case len(s.rawSynonyms) > 1:
+			synonyms = s.rawSynonyms
+			break
+		case len(s.rawSynonyms) == 1:
+			synonyms = s.rawSynonyms[0]
 			break
 		default:
 			synonyms = ""

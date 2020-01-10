@@ -26,7 +26,7 @@ func TestTokenFilterSynonymGraphSerialization(t *testing.T) {
 		// #1
 		{
 			desc:        "Include Name with Synonyms and SynonymsPath.",
-			s:           NewTokenFilterSynonymGraph("test").Synonyms("lol, laughing out loud", "universe, cosmos").SynonymsPath("analysis/synonym.txt"),
+			s:           NewTokenFilterSynonymGraph("test").Synonyms(NewMappingRule("", "").Value("lol, laughing out loud"), NewMappingRule("", "").Value("universe, cosmos")).SynonymsPath("analysis/synonym.txt"),
 			includeName: true,
 			expected:    `{"test":{"synonyms":["lol, laughing out loud","universe, cosmos"],"synonyms_path":"analysis/synonym.txt","type":"synonym_graph"}}`,
 		},

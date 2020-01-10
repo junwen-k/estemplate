@@ -26,7 +26,7 @@ func TestTokenFilterSynonymSerialization(t *testing.T) {
 		// #1
 		{
 			desc:        "Include Name with Synonyms and SynonymsPath.",
-			s:           NewTokenFilterSynonym("test").Synonyms("i-pod, i pod => ipod", "universe, cosmos").SynonymsPath("analysis/synonym.txt"),
+			s:           NewTokenFilterSynonym("test").Synonyms(NewMappingRule("", "").Key("i-pod", "i pod").Value("ipod"), NewMappingRule("", "").Value("universe, cosmos")).SynonymsPath("analysis/synonym.txt"),
 			includeName: true,
 			expected:    `{"test":{"synonyms":["i-pod, i pod =\u003e ipod","universe, cosmos"],"synonyms_path":"analysis/synonym.txt","type":"synonym"}}`,
 		},

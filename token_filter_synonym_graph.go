@@ -18,7 +18,8 @@ type TokenFilterSynonymGraph struct {
 	name string
 
 	// fields specific to synonym token graph filter
-	synonyms     []string
+	synonyms     []*MappingRule
+	rawSynonyms  []string
 	synonymsPath string
 	expand       *bool
 	lenient      *bool
@@ -30,8 +31,9 @@ type TokenFilterSynonymGraph struct {
 // NewTokenFilterSynonymGraph initializes a new TokenFilterSynonymGraph.
 func NewTokenFilterSynonymGraph(name string) *TokenFilterSynonymGraph {
 	return &TokenFilterSynonymGraph{
-		name:     name,
-		synonyms: make([]string, 0),
+		name:        name,
+		synonyms:    make([]*MappingRule, 0),
+		rawSynonyms: make([]string, 0),
 	}
 }
 
@@ -41,8 +43,15 @@ func (g *TokenFilterSynonymGraph) Name() string {
 }
 
 // Synonyms sets a list of synonyms to be used for the filter.
-func (g *TokenFilterSynonymGraph) Synonyms(synonyms ...string) *TokenFilterSynonymGraph {
+func (g *TokenFilterSynonymGraph) Synonyms(synonyms ...*MappingRule) *TokenFilterSynonymGraph {
 	g.synonyms = append(g.synonyms, synonyms...)
+	return g
+}
+
+// RawSynonyms sets a list of synonyms to be used for the filter. Use this if you prefer to use
+// strings instead of using MappingRule type.
+func (g *TokenFilterSynonymGraph) RawSynonyms(rawSynonyms ...string) *TokenFilterSynonymGraph {
+	g.rawSynonyms = append(g.rawSynonyms, rawSynonyms...)
 	return g
 }
 
@@ -133,12 +142,34 @@ func (g *TokenFilterSynonymGraph) Source(includeName bool) (interface{}, error) 
 
 	if len(g.synonyms) > 0 {
 		var synonyms interface{}
+		var ss []interface{}
+		for _, syn := range g.synonyms {
+			synonym, err := syn.Source()
+			if err != nil {
+				return nil, err
+			}
+			ss = append(ss, synonym)
+		}
 		switch {
-		case len(g.synonyms) > 1:
-			synonyms = g.synonyms
+		case len(ss) > 1:
+			synonyms = ss
 			break
-		case len(g.synonyms) == 1:
-			synonyms = g.synonyms[0]
+		case len(ss) == 1:
+			synonyms = ss[0]
+			break
+		default:
+			synonyms = ""
+		}
+		options["synonyms"] = synonyms
+	}
+	if len(g.rawSynonyms) > 0 {
+		var synonyms interface{}
+		switch {
+		case len(g.rawSynonyms) > 1:
+			synonyms = g.rawSynonyms
+			break
+		case len(g.rawSynonyms) == 1:
+			synonyms = g.rawSynonyms[0]
 			break
 		default:
 			synonyms = ""
