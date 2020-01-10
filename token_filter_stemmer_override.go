@@ -15,7 +15,7 @@ type TokenFilterStemmerOverride struct {
 	name string
 
 	// fields specific to stemmer override token filter
-	rules     []*TokenFilterStemmerMappingRule
+	rules     []*MappingRule
 	rulesPath string
 }
 
@@ -23,7 +23,7 @@ type TokenFilterStemmerOverride struct {
 func NewTokenFilterStemmerOverride(name string) *TokenFilterStemmerOverride {
 	return &TokenFilterStemmerOverride{
 		name:  name,
-		rules: make([]*TokenFilterStemmerMappingRule, 0),
+		rules: make([]*MappingRule, 0),
 	}
 }
 
@@ -33,7 +33,7 @@ func (o *TokenFilterStemmerOverride) Name() string {
 }
 
 // Rules sets a list of mapping rules to use.
-func (o *TokenFilterStemmerOverride) Rules(rules ...*TokenFilterStemmerMappingRule) *TokenFilterStemmerOverride {
+func (o *TokenFilterStemmerOverride) Rules(rules ...*MappingRule) *TokenFilterStemmerOverride {
 	o.rules = append(o.rules, rules...)
 	return o
 }

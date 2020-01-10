@@ -19,7 +19,7 @@ func TestTokenFilterStemmerOverrideSerialization(t *testing.T) {
 		// #0
 		{
 			desc:        "Include Name with Rules.",
-			s:           NewTokenFilterStemmerOverride("test").Rules(NewTokenFilterStemmerMappingRule("running", "run"), NewTokenFilterStemmerMappingRule("stemmer", "stemmer")),
+			s:           NewTokenFilterStemmerOverride("test").Rules(NewMappingRule("running", "run"), NewMappingRule("stemmer", "stemmer")),
 			includeName: true,
 			expected:    `{"test":{"rules":["running =\u003e run","stemmer =\u003e stemmer"],"type":"stemmer_override"}}`,
 		},
