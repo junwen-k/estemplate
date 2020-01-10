@@ -34,6 +34,9 @@ func (r *TokenFilterPatternReplace) Name() string {
 }
 
 // Pattern sets the regular expression for matching tokens.
+//
+// See https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
+// for details.
 func (r *TokenFilterPatternReplace) Pattern(pattern string) *TokenFilterPatternReplace {
 	r.pattern = pattern
 	return r
@@ -52,7 +55,7 @@ func (r *TokenFilterPatternReplace) Validate(includeName bool) error {
 		invalid = append(invalid, "Name")
 	}
 	if len(invalid) > 0 {
-		return fmt.Errorf("missing required fields or invalid values: %v", invalid)
+		return fmt.Errorf("missing required fields: %v", invalid)
 	}
 	return nil
 }
