@@ -9,24 +9,36 @@ import (
 	"testing"
 )
 
-func TestTokenFilterStemmerMappingRuleSerialization(t *testing.T) {
+func TestMappingRuleSerialization(t *testing.T) {
 	tests := []struct {
 		desc        string
-		r           *TokenFilterStemmerMappingRule
+		r           *MappingRule
 		includeName bool
 		expected    string
 	}{
 		// #0
 		{
-			desc:     "Without From and To.",
-			r:        NewTokenFilterStemmerMappingRule("from", "to"),
-			expected: `"from =\u003e to"`,
+			desc:     "With Key and Value.",
+			r:        NewMappingRule("key", "value"),
+			expected: `"key =\u003e value"`,
 		},
 		// #1
 		{
-			desc:     "With From and To.",
-			r:        NewTokenFilterStemmerMappingRule("from", "to").From("updated_from").To("updated_to"),
-			expected: `"updated_from =\u003e updated_to"`,
+			desc:     "With Keys and Values.",
+			r:        NewMappingRule("key", "value").Key("second_key").Value("second_value"),
+			expected: `"key, second_key =\u003e value, second_value"`,
+		},
+		// #2
+		{
+			desc:     "With Key.",
+			r:        NewMappingRule("key", ""),
+			expected: `"key"`,
+		},
+		// #3
+		{
+			desc:     "With Values.",
+			r:        NewMappingRule("", "value").Value("second_value"),
+			expected: `"value, second_value"`,
 		},
 	}
 	for _, test := range tests {
