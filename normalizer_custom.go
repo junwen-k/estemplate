@@ -24,7 +24,9 @@ type NormalizerCustom struct {
 // NewNormalizerCustom initializes a new NormalizerCustom.
 func NewNormalizerCustom(name string) *NormalizerCustom {
 	return &NormalizerCustom{
-		name: name,
+		name:       name,
+		charFilter: make([]string, 0),
+		filter:     make([]string, 0),
 	}
 }
 
