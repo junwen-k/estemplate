@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeLong struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to long datatype
 	coerce          *bool
@@ -35,6 +36,16 @@ func NewDatatypeLong(name string) *DatatypeLong {
 // Name returns field key for the Datatype.
 func (l *DatatypeLong) Name() string {
 	return l.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (l *DatatypeLong) CopyTo(copyTo ...string) *DatatypeLong {
+	l.copyTo = append(l.copyTo, copyTo...)
+	return l
 }
 
 // Coerce sets whether if the field should be coerced, attempting to clean up
@@ -123,6 +134,7 @@ func (l *DatatypeLong) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "long",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"coerce": true,
 	// 		"boost": 2,
 	// 		"doc_values": true,
@@ -135,6 +147,20 @@ func (l *DatatypeLong) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "long"
 
+	if len(l.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(l.copyTo) > 1:
+			copyTo = l.copyTo
+			break
+		case len(l.copyTo) == 1:
+			copyTo = l.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if l.coerce != nil {
 		options["coerce"] = l.coerce
 	}

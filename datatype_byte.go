@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeByte struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to byte datatype
 	coerce          *bool
@@ -35,6 +36,16 @@ func NewDatatypeByte(name string) *DatatypeByte {
 // Name returns field key for the Datatype.
 func (b *DatatypeByte) Name() string {
 	return b.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (b *DatatypeByte) CopyTo(copyTo ...string) *DatatypeByte {
+	b.copyTo = append(b.copyTo, copyTo...)
+	return b
 }
 
 // Coerce sets whether if the field should be coerced, attempting to clean up
@@ -123,6 +134,7 @@ func (b *DatatypeByte) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "byte",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"coerce": true,
 	// 		"boost": 2,
 	// 		"doc_values": true,
@@ -135,6 +147,20 @@ func (b *DatatypeByte) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "byte"
 
+	if len(b.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(b.copyTo) > 1:
+			copyTo = b.copyTo
+			break
+		case len(b.copyTo) == 1:
+			copyTo = b.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if b.coerce != nil {
 		options["coerce"] = b.coerce
 	}

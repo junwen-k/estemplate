@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeInteger struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to integer datatype
 	coerce          *bool
@@ -35,6 +36,16 @@ func NewDatatypeInteger(name string) *DatatypeInteger {
 // Name returns field key for the Datatype.
 func (i *DatatypeInteger) Name() string {
 	return i.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (i *DatatypeInteger) CopyTo(copyTo ...string) *DatatypeInteger {
+	i.copyTo = append(i.copyTo, copyTo...)
+	return i
 }
 
 // Coerce sets whether if the field should be coerced, attempting to clean up
@@ -123,6 +134,7 @@ func (i *DatatypeInteger) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "integer",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"coerce": true,
 	// 		"boost": 2,
 	// 		"doc_values": true,
@@ -135,6 +147,20 @@ func (i *DatatypeInteger) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "integer"
 
+	if len(i.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(i.copyTo) > 1:
+			copyTo = i.copyTo
+			break
+		case len(i.copyTo) == 1:
+			copyTo = i.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if i.coerce != nil {
 		options["coerce"] = i.coerce
 	}

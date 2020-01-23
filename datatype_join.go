@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeJoin struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to join datatype
 	relations           []*Relation
@@ -31,6 +32,16 @@ func NewDatatypeJoin(name string) *DatatypeJoin {
 // Name returns field key for the Datatype.
 func (j *DatatypeJoin) Name() string {
 	return j.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (j *DatatypeJoin) CopyTo(copyTo ...string) *DatatypeJoin {
+	j.copyTo = append(j.copyTo, copyTo...)
+	return j
 }
 
 // Relations sets parent/child relation within the documents.
@@ -67,6 +78,7 @@ func (j *DatatypeJoin) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "join",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"relations": {
 	// 			"question": ["answer", "comment"],
 	// 			"answer": "vote"
@@ -77,6 +89,20 @@ func (j *DatatypeJoin) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "join"
 
+	if len(j.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(j.copyTo) > 1:
+			copyTo = j.copyTo
+			break
+		case len(j.copyTo) == 1:
+			copyTo = j.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if len(j.relations) > 0 {
 		relations := make(map[string]interface{})
 		for _, r := range j.relations {

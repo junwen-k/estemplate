@@ -14,7 +14,8 @@ import "fmt"
 // for details
 type DatatypeObject struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to object datatype
 	dynamic    *bool
@@ -34,6 +35,16 @@ func NewDatatypeObject(name string) *DatatypeObject {
 // Name returns field key for the Datatype.
 func (o *DatatypeObject) Name() string {
 	return o.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (o *DatatypeObject) CopyTo(copyTo ...string) *DatatypeObject {
+	o.copyTo = append(o.copyTo, copyTo...)
+	return o
 }
 
 // Dynamic sets whether if fields can be added dynamically to a document.
@@ -93,6 +104,7 @@ func (o *DatatypeObject) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "object",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"dynamic": true,
 	// 		"enabled": true,
 	// 		"properties": {
@@ -106,6 +118,20 @@ func (o *DatatypeObject) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "object"
 
+	if len(o.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(o.copyTo) > 1:
+			copyTo = o.copyTo
+			break
+		case len(o.copyTo) == 1:
+			copyTo = o.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if o.dynamic != nil {
 		options["dynamic"] = o.dynamic
 	}

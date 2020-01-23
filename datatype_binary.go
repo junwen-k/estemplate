@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeBinary struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to binary datatype
 	docValues *bool
@@ -25,6 +26,16 @@ func NewDatatypeBinary(name string) *DatatypeBinary {
 	return &DatatypeBinary{
 		name: name,
 	}
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (b *DatatypeBinary) CopyTo(copyTo ...string) *DatatypeBinary {
+	b.copyTo = append(b.copyTo, copyTo...)
+	return b
 }
 
 // Name returns field key for the Datatype.
@@ -70,6 +81,7 @@ func (b *DatatypeBinary) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "binary",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"doc_values": true,
 	// 		"store": true
 	// 	}
@@ -77,6 +89,20 @@ func (b *DatatypeBinary) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "binary"
 
+	if len(b.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(b.copyTo) > 1:
+			copyTo = b.copyTo
+			break
+		case len(b.copyTo) == 1:
+			copyTo = b.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if b.docValues != nil {
 		options["doc_values"] = b.docValues
 	}

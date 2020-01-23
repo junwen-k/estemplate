@@ -18,7 +18,8 @@ import (
 // for details.
 type DatatypeDate struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to date datatype
 	boost           *float32
@@ -43,6 +44,16 @@ func NewDatatypeDate(name string) *DatatypeDate {
 // Name returns field key for the Datatype.
 func (d *DatatypeDate) Name() string {
 	return d.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (d *DatatypeDate) CopyTo(copyTo ...string) *DatatypeDate {
+	d.copyTo = append(d.copyTo, copyTo...)
+	return d
 }
 
 // Boost sets Mapping field-level query time boosting. Defaults to 1.0.
@@ -157,6 +168,7 @@ func (d *DatatypeDate) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "date",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"boost": 2,
 	// 		"doc_values": true,
 	// 		"format": "strict_date_optional_time||epoch_millis",
@@ -170,6 +182,20 @@ func (d *DatatypeDate) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "date"
 
+	if len(d.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(d.copyTo) > 1:
+			copyTo = d.copyTo
+			break
+		case len(d.copyTo) == 1:
+			copyTo = d.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if d.boost != nil {
 		options["boost"] = d.boost
 	}

@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeScaledFloat struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to scaled float datatype
 	coerce          *bool
@@ -36,6 +37,16 @@ func NewDatatypeScaledFloat(name string) *DatatypeScaledFloat {
 // Name returns field key for the Datatype.
 func (sf *DatatypeScaledFloat) Name() string {
 	return sf.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (sf *DatatypeScaledFloat) CopyTo(copyTo ...string) *DatatypeScaledFloat {
+	sf.copyTo = append(sf.copyTo, copyTo...)
+	return sf
 }
 
 // Coerce sets whether if the field should be coerced, attempting to clean up
@@ -130,6 +141,7 @@ func (sf *DatatypeScaledFloat) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "scaled_float",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"coerce": true,
 	// 		"boost": 2,
 	// 		"doc_values": true,
@@ -143,6 +155,20 @@ func (sf *DatatypeScaledFloat) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "scaled_float"
 
+	if len(sf.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(sf.copyTo) > 1:
+			copyTo = sf.copyTo
+			break
+		case len(sf.copyTo) == 1:
+			copyTo = sf.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if sf.coerce != nil {
 		options["coerce"] = sf.coerce
 	}

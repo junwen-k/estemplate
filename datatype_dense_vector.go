@@ -15,7 +15,8 @@ import "fmt"
 // for details.
 type DatatypeDenseVector struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to dense vector datatype
 	dims *int
@@ -31,6 +32,16 @@ func NewDatatypeDenseVector(name string) *DatatypeDenseVector {
 // Name returns field key for the Datatype.
 func (v *DatatypeDenseVector) Name() string {
 	return v.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (v *DatatypeDenseVector) CopyTo(copyTo ...string) *DatatypeDenseVector {
+	v.copyTo = append(v.copyTo, copyTo...)
+	return v
 }
 
 // Dims sets the number of dimensions in the vector. Internally, each document's dense
@@ -59,12 +70,27 @@ func (v *DatatypeDenseVector) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "dense_vector",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"dims": 3
 	// 	}
 	// }
 	options := make(map[string]interface{})
 	options["type"] = "dense_vector"
 
+	if len(v.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(v.copyTo) > 1:
+			copyTo = v.copyTo
+			break
+		case len(v.copyTo) == 1:
+			copyTo = v.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if v.dims != nil {
 		options["dims"] = v.dims
 	}

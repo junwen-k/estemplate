@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeRankFeature struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to rank feature datatype
 	positiveScoreImpact *bool
@@ -29,6 +30,16 @@ func NewDatatypeRankFeature(name string) *DatatypeRankFeature {
 // Name returns field key for the Datatype.
 func (f *DatatypeRankFeature) Name() string {
 	return f.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (f *DatatypeRankFeature) CopyTo(copyTo ...string) *DatatypeRankFeature {
+	f.copyTo = append(f.copyTo, copyTo...)
+	return f
 }
 
 // PositiveScoreImpact sets and allows `rank_feature` query to modify the scoring formula in such a way
@@ -56,12 +67,27 @@ func (f *DatatypeRankFeature) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "rank_feature",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"positive_score_impact": true
 	// 	}
 	// }
 	options := make(map[string]interface{})
 	options["type"] = "rank_feature"
 
+	if len(f.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(f.copyTo) > 1:
+			copyTo = f.copyTo
+			break
+		case len(f.copyTo) == 1:
+			copyTo = f.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if f.positiveScoreImpact != nil {
 		options["positive_score_impact"] = f.positiveScoreImpact
 	}

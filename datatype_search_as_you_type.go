@@ -14,7 +14,8 @@ import "fmt"
 // for details.
 type DatatypeSearchAsYouType struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific search as you type datatype
 	maxShingleSize      *int
@@ -39,6 +40,16 @@ func NewDatatypeSearchAsYouType(name string) *DatatypeSearchAsYouType {
 // Name returns field key for the Datatype.
 func (t *DatatypeSearchAsYouType) Name() string {
 	return t.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (t *DatatypeSearchAsYouType) CopyTo(copyTo ...string) *DatatypeSearchAsYouType {
+	t.copyTo = append(t.copyTo, copyTo...)
+	return t
 }
 
 // MaxShingleSize sets the largest shingle size to index the input with and create subfields for,
@@ -200,6 +211,7 @@ func (t *DatatypeSearchAsYouType) Source(includeName bool) (interface{}, error) 
 	// {
 	// 	"test": {
 	// 		"type": "search_as_you_type",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"max_shingle_size": 3
 	// 		"analyzer": "my_analyzer",
 	// 		"index": true,
@@ -215,6 +227,20 @@ func (t *DatatypeSearchAsYouType) Source(includeName bool) (interface{}, error) 
 	options := make(map[string]interface{})
 	options["type"] = "search_as_you_type"
 
+	if len(t.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(t.copyTo) > 1:
+			copyTo = t.copyTo
+			break
+		case len(t.copyTo) == 1:
+			copyTo = t.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if t.maxShingleSize != nil {
 		options["max_shingle_size"] = t.maxShingleSize
 	}

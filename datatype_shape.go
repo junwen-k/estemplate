@@ -14,7 +14,8 @@ import "fmt"
 // for details.
 type DatatypeShape struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to shape datatype
 	orientation     string
@@ -33,6 +34,16 @@ func NewDatatypeShape(name string) *DatatypeShape {
 // Name returns field key for the Datatype.
 func (s *DatatypeShape) Name() string {
 	return s.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (s *DatatypeShape) CopyTo(copyTo ...string) *DatatypeShape {
+	s.copyTo = append(s.copyTo, copyTo...)
+	return s
 }
 
 // Orientation sets the orientation on how to interpret vertex order for polygons / multipolygons.
@@ -84,6 +95,7 @@ func (s *DatatypeShape) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "shape",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"orientation": "ccw",
 	// 		"ignore_malformed": true,
 	// 		"ignore_z_value": true,
@@ -93,6 +105,20 @@ func (s *DatatypeShape) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "shape"
 
+	if len(s.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(s.copyTo) > 1:
+			copyTo = s.copyTo
+			break
+		case len(s.copyTo) == 1:
+			copyTo = s.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if s.orientation != "" {
 		options["orientation"] = s.orientation
 	}

@@ -16,7 +16,8 @@ import "fmt"
 // for details.
 type DatatypeGeoPoint struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to geo point datatype
 	ignoreMalformed *bool
@@ -34,6 +35,16 @@ func NewDatatypeGeoPoint(name string) *DatatypeGeoPoint {
 // Name returns field key for the Datatype.
 func (p *DatatypeGeoPoint) Name() string {
 	return p.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (p *DatatypeGeoPoint) CopyTo(copyTo ...string) *DatatypeGeoPoint {
+	p.copyTo = append(p.copyTo, copyTo...)
+	return p
 }
 
 // IgnoreMalformed sets whether if the field should ignore malformed geo-points.
@@ -80,6 +91,7 @@ func (p *DatatypeGeoPoint) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "geo_point",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"ignore_malformed": true,
 	// 		"ignore_z_value": true,
 	// 		"null_value": [ 0, 0 ]
@@ -88,6 +100,20 @@ func (p *DatatypeGeoPoint) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "geo_point"
 
+	if len(p.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(p.copyTo) > 1:
+			copyTo = p.copyTo
+			break
+		case len(p.copyTo) == 1:
+			copyTo = p.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if p.ignoreMalformed != nil {
 		options["ignore_malformed"] = p.ignoreMalformed
 	}

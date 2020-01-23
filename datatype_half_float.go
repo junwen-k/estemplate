@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeHalfFloat struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to half float datatype
 	coerce          *bool
@@ -35,6 +36,16 @@ func NewDatatypeHalfFloat(name string) *DatatypeHalfFloat {
 // Name returns field key for the Datatype.
 func (hf *DatatypeHalfFloat) Name() string {
 	return hf.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (hf *DatatypeHalfFloat) CopyTo(copyTo ...string) *DatatypeHalfFloat {
+	hf.copyTo = append(hf.copyTo, copyTo...)
+	return hf
 }
 
 // Coerce sets whether if the field should be coerced, attempting to clean up
@@ -123,6 +134,7 @@ func (hf *DatatypeHalfFloat) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "half_float",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"coerce": true,
 	// 		"boost": 2,
 	// 		"doc_values": true,
@@ -135,6 +147,20 @@ func (hf *DatatypeHalfFloat) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "half_float"
 
+	if len(hf.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(hf.copyTo) > 1:
+			copyTo = hf.copyTo
+			break
+		case len(hf.copyTo) == 1:
+			copyTo = hf.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if hf.coerce != nil {
 		options["coerce"] = hf.coerce
 	}

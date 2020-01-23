@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeGeoShape struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to geo shape datatype
 	tree             string
@@ -40,6 +41,16 @@ func NewDatatypeGeoShape(name string) *DatatypeGeoShape {
 // Name returns field key for the Datatype.
 func (s *DatatypeGeoShape) Name() string {
 	return s.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (s *DatatypeGeoShape) CopyTo(copyTo ...string) *DatatypeGeoShape {
+	s.copyTo = append(s.copyTo, copyTo...)
+	return s
 }
 
 // Tree sets the name of the PrefixTree implementation to be used.
@@ -159,6 +170,7 @@ func (s *DatatypeGeoShape) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "geo_shape",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"tree": "quadtree",
 	// 		"precision": "50m",
 	// 		"tree_levels": "various",
@@ -174,6 +186,20 @@ func (s *DatatypeGeoShape) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "geo_shape"
 
+	if len(s.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(s.copyTo) > 1:
+			copyTo = s.copyTo
+			break
+		case len(s.copyTo) == 1:
+			copyTo = s.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if s.tree != "" {
 		options["tree"] = s.tree
 	}

@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeIPRange struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to ip range datatype
 	coerce *bool
@@ -32,6 +33,16 @@ func NewDatatypeIPRange(name string) *DatatypeIPRange {
 // Name returns field key for the Datatype.
 func (r *DatatypeIPRange) Name() string {
 	return r.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (r *DatatypeIPRange) CopyTo(copyTo ...string) *DatatypeIPRange {
+	r.copyTo = append(r.copyTo, copyTo...)
+	return r
 }
 
 // Coerce sets whether if the field should be coerced, attempting to clean up
@@ -89,6 +100,7 @@ func (r *DatatypeIPRange) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "ip_range",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"coerce": true,
 	// 		"boost": 2,
 	// 		"index": true,
@@ -98,6 +110,20 @@ func (r *DatatypeIPRange) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "ip_range"
 
+	if len(r.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(r.copyTo) > 1:
+			copyTo = r.copyTo
+			break
+		case len(r.copyTo) == 1:
+			copyTo = r.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if r.coerce != nil {
 		options["coerce"] = r.coerce
 	}

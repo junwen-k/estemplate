@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeNested struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to nested datatype
 	dynamic    *bool
@@ -32,6 +33,16 @@ func NewDatatypeNested(name string) *DatatypeNested {
 // Name returns field key for the Datatype.
 func (n *DatatypeNested) Name() string {
 	return n.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (n *DatatypeNested) CopyTo(copyTo ...string) *DatatypeNested {
+	n.copyTo = append(n.copyTo, copyTo...)
+	return n
 }
 
 // Dynamic sets whether if fields can be added dynamically to a document.
@@ -81,6 +92,7 @@ func (n *DatatypeNested) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "nested",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"dynamic": true,
 	// 		"properties": {
 	// 			"field_name": {
@@ -93,6 +105,20 @@ func (n *DatatypeNested) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "nested"
 
+	if len(n.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(n.copyTo) > 1:
+			copyTo = n.copyTo
+			break
+		case len(n.copyTo) == 1:
+			copyTo = n.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if n.dynamic != nil {
 		options["dynamic"] = n.dynamic
 	}

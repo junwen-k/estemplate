@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeText struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to text datatype
 	analyzer                 string
@@ -46,6 +47,16 @@ func NewDatatypeText(name string) *DatatypeText {
 // Name returns field key for the Datatype.
 func (t *DatatypeText) Name() string {
 	return t.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (t *DatatypeText) CopyTo(copyTo ...string) *DatatypeText {
+	t.copyTo = append(t.copyTo, copyTo...)
+	return t
 }
 
 // Analyzer sets which analyzer should be used for analyzed string fields.
@@ -277,6 +288,7 @@ func (t *DatatypeText) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "text",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"analyzer": "my_analyzer",
 	// 		"boost": 2,
 	// 		"eager_global_ordinals": true,
@@ -311,6 +323,20 @@ func (t *DatatypeText) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "text"
 
+	if len(t.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(t.copyTo) > 1:
+			copyTo = t.copyTo
+			break
+		case len(t.copyTo) == 1:
+			copyTo = t.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if t.analyzer != "" {
 		options["analyzer"] = t.analyzer
 	}

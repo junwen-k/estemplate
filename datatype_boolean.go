@@ -16,7 +16,8 @@ import "fmt"
 // for details.
 type DatatypeBoolean struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to boolean datatype
 	boost     *float32
@@ -38,8 +39,18 @@ func (b *DatatypeBoolean) Name() string {
 	return b.name
 }
 
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
 //
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (b *DatatypeBoolean) CopyTo(copyTo ...string) *DatatypeBoolean {
+	b.copyTo = append(b.copyTo, copyTo...)
+	return b
+}
+
 // Boost sets Mapping field-level query time boosting. Defaults to 1.0.
+//
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-boost.html
 // for details.
 func (b *DatatypeBoolean) Boost(boost float32) *DatatypeBoolean {
@@ -49,8 +60,8 @@ func (b *DatatypeBoolean) Boost(boost float32) *DatatypeBoolean {
 
 // DocValues sets whether if the field should be stored on disk in a column-stride fashion
 // so that it can later be used for sorting, aggregations, or scripting.
-//
 // Defaults to true.
+//
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/doc-values.html
 // for details.
 func (b *DatatypeBoolean) DocValues(docValues bool) *DatatypeBoolean {
@@ -58,8 +69,8 @@ func (b *DatatypeBoolean) DocValues(docValues bool) *DatatypeBoolean {
 	return b
 }
 
-//
 // Index sets whether if the field should be searchable. Defaults to true.
+//
 // See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/mapping-index.html
 // for details.
 func (b *DatatypeBoolean) Index(index bool) *DatatypeBoolean {
@@ -104,6 +115,7 @@ func (b *DatatypeBoolean) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "boolean",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"boost": 2,
 	// 		"doc_values": true,
 	// 		"index": true,
@@ -114,6 +126,20 @@ func (b *DatatypeBoolean) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "boolean"
 
+	if len(b.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(b.copyTo) > 1:
+			copyTo = b.copyTo
+			break
+		case len(b.copyTo) == 1:
+			copyTo = b.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if b.boost != nil {
 		options["boost"] = b.boost
 	}

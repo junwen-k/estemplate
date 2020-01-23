@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeShort struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to short datatype
 	coerce          *bool
@@ -35,6 +36,16 @@ func NewDatatypeShort(name string) *DatatypeShort {
 // Name returns field key for the Datatype.
 func (s *DatatypeShort) Name() string {
 	return s.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (s *DatatypeShort) CopyTo(copyTo ...string) *DatatypeShort {
+	s.copyTo = append(s.copyTo, copyTo...)
+	return s
 }
 
 // Coerce sets whether if the field should be coerced, attempting to clean up
@@ -123,6 +134,7 @@ func (s *DatatypeShort) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "short",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"coerce": true,
 	// 		"boost": 2,
 	// 		"doc_values": true,
@@ -135,6 +147,20 @@ func (s *DatatypeShort) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "short"
 
+	if len(s.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(s.copyTo) > 1:
+			copyTo = s.copyTo
+			break
+		case len(s.copyTo) == 1:
+			copyTo = s.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if s.coerce != nil {
 		options["coerce"] = s.coerce
 	}

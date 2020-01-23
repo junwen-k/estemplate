@@ -15,7 +15,8 @@ import "fmt"
 // for details.
 type DatatypeSparseVector struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to sparse vector datatype
 }
@@ -30,6 +31,16 @@ func NewDatatypeSparseVector(name string) *DatatypeSparseVector {
 // Name returns field key for the Datatype.
 func (v *DatatypeSparseVector) Name() string {
 	return v.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (v *DatatypeSparseVector) CopyTo(copyTo ...string) *DatatypeSparseVector {
+	v.copyTo = append(v.copyTo, copyTo...)
+	return v
 }
 
 // Validate validates DatatypeSparseVector.
@@ -48,11 +59,27 @@ func (v *DatatypeSparseVector) Validate(includeName bool) error {
 func (v *DatatypeSparseVector) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
-	// 		"type": "sparse_vector"
+	// 		"type": "sparse_vector",
+	// 		"copy_to": ["field_1", "field_2"]
 	// 	}
 	// }
 	options := make(map[string]interface{})
 	options["type"] = "sparse_vector"
+
+	if len(v.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(v.copyTo) > 1:
+			copyTo = v.copyTo
+			break
+		case len(v.copyTo) == 1:
+			copyTo = v.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 
 	if !includeName {
 		return options, nil

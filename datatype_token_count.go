@@ -14,7 +14,8 @@ import "fmt"
 // for details.
 type DatatypeTokenCount struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to token count datatype
 	analyzer                 string
@@ -36,6 +37,16 @@ func NewDatatypeTokenCount(name string) *DatatypeTokenCount {
 // Name returns field key for the Datatype.
 func (c *DatatypeTokenCount) Name() string {
 	return c.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (c *DatatypeTokenCount) CopyTo(copyTo ...string) *DatatypeTokenCount {
+	c.copyTo = append(c.copyTo, copyTo...)
+	return c
 }
 
 // Analyzer sets which analyzer should be used for analyzed string fields.
@@ -122,6 +133,7 @@ func (c *DatatypeTokenCount) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "token_count",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"analyzer": "standard",
 	//    "enable_position_increments": true,
 	// 		"boost": 2,
@@ -134,6 +146,20 @@ func (c *DatatypeTokenCount) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "token_count"
 
+	if len(c.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(c.copyTo) > 1:
+			copyTo = c.copyTo
+			break
+		case len(c.copyTo) == 1:
+			copyTo = c.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if c.analyzer != "" {
 		options["analyzer"] = c.analyzer
 	}

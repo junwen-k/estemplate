@@ -14,7 +14,8 @@ import "fmt"
 // for details.
 type DatatypeAlias struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to alias datatype
 	path string
@@ -30,6 +31,16 @@ func NewDatatypeAlias(name string) *DatatypeAlias {
 // Name returns field key for the Datatype.
 func (a *DatatypeAlias) Name() string {
 	return a.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (a *DatatypeAlias) CopyTo(copyTo ...string) *DatatypeAlias {
+	a.copyTo = append(a.copyTo, copyTo...)
+	return a
 }
 
 // Path sets the path to the target field. Note that this must be the full path,
@@ -56,12 +67,27 @@ func (a *DatatypeAlias) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "alias",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"path": "distance"
 	// 	}
 	// }
 	options := make(map[string]interface{})
 	options["type"] = "alias"
 
+	if len(a.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(a.copyTo) > 1:
+			copyTo = a.copyTo
+			break
+		case len(a.copyTo) == 1:
+			copyTo = a.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if a.path != "" {
 		options["path"] = a.path
 	}

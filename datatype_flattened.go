@@ -14,7 +14,8 @@ import "fmt"
 // for details.
 type DatatypeFlattened struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to flattened datatype
 	boost                    *float32
@@ -39,6 +40,16 @@ func NewDatatypeFlattened(name string) *DatatypeFlattened {
 // Name returns field key for the Datatype.
 func (f *DatatypeFlattened) Name() string {
 	return f.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (f *DatatypeFlattened) CopyTo(copyTo ...string) *DatatypeFlattened {
+	f.copyTo = append(f.copyTo, copyTo...)
+	return f
 }
 
 // Boost sets Mapping field-level query time boosting. Defaults to 1.0.
@@ -180,6 +191,7 @@ func (f *DatatypeFlattened) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "flattened",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"boost": 2,
 	// 		"depth_limit": 20,
 	// 		"doc_values": true,
@@ -195,6 +207,20 @@ func (f *DatatypeFlattened) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "flattened"
 
+	if len(f.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(f.copyTo) > 1:
+			copyTo = f.copyTo
+			break
+		case len(f.copyTo) == 1:
+			copyTo = f.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if f.boost != nil {
 		options["boost"] = f.boost
 	}

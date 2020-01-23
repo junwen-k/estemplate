@@ -12,7 +12,8 @@ import "fmt"
 // for details.
 type DatatypeIP struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to ip datatype
 	boost     *float32
@@ -32,6 +33,16 @@ func NewDatatypeIP(name string) *DatatypeIP {
 // Name returns field key for the Datatype.
 func (ip *DatatypeIP) Name() string {
 	return ip.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (ip *DatatypeIP) CopyTo(copyTo ...string) *DatatypeIP {
+	ip.copyTo = append(ip.copyTo, copyTo...)
+	return ip
 }
 
 // Boost sets Mapping field-level query time boosting. Defaults to 1.0.
@@ -100,6 +111,7 @@ func (ip *DatatypeIP) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "ip",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"boost": 2,
 	// 		"doc_values": true,
 	// 		"index": true,
@@ -110,6 +122,20 @@ func (ip *DatatypeIP) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "ip"
 
+	if len(ip.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(ip.copyTo) > 1:
+			copyTo = ip.copyTo
+			break
+		case len(ip.copyTo) == 1:
+			copyTo = ip.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if ip.boost != nil {
 		options["boost"] = ip.boost
 	}

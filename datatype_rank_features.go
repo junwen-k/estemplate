@@ -14,7 +14,8 @@ import "fmt"
 // for details.
 type DatatypeRankFeatures struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to rank features datatype
 }
@@ -29,6 +30,16 @@ func NewDatatypeRankFeatures(name string) *DatatypeRankFeatures {
 // Name returns field key for the Datatype.
 func (f *DatatypeRankFeatures) Name() string {
 	return f.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (f *DatatypeRankFeatures) CopyTo(copyTo ...string) *DatatypeRankFeatures {
+	f.copyTo = append(f.copyTo, copyTo...)
+	return f
 }
 
 // Validate validates DatatypeRankFeatures.
@@ -47,11 +58,27 @@ func (f *DatatypeRankFeatures) Validate(includeName bool) error {
 func (f *DatatypeRankFeatures) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
-	// 		"type": "rank_features"
+	// 		"type": "rank_features",
+	// 		"copy_to": ["field_1", "field_2"]
 	// 	}
 	// }
 	options := make(map[string]interface{})
 	options["type"] = "rank_features"
+
+	if len(f.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(f.copyTo) > 1:
+			copyTo = f.copyTo
+			break
+		case len(f.copyTo) == 1:
+			copyTo = f.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 
 	if !includeName {
 		return options, nil

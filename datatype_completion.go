@@ -12,7 +12,8 @@ import "fmt"
 // for details.
 type DatatypeCompletion struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to completion datatype
 	analyzer                   string
@@ -32,6 +33,16 @@ func NewDatatypeCompletion(name string) *DatatypeCompletion {
 // Name returns field key for the Datatype.
 func (c *DatatypeCompletion) Name() string {
 	return c.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (c *DatatypeCompletion) CopyTo(copyTo ...string) *DatatypeCompletion {
+	c.copyTo = append(c.copyTo, copyTo...)
+	return c
 }
 
 // Analyzer sets which analyzer should be used for indexing.
@@ -90,6 +101,7 @@ func (c *DatatypeCompletion) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "completion",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"analyzer": "simple",
 	// 		"search_analyzer": "standard",
 	// 		"preserve_separators": true,
@@ -100,6 +112,20 @@ func (c *DatatypeCompletion) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "completion"
 
+	if len(c.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(c.copyTo) > 1:
+			copyTo = c.copyTo
+			break
+		case len(c.copyTo) == 1:
+			copyTo = c.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if c.analyzer != "" {
 		options["analyzer"] = c.analyzer
 	}

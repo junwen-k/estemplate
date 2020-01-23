@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeKeyword struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to keyword datatype
 	boost                    *float32
@@ -42,6 +43,16 @@ func NewDatatypeKeyword(name string) *DatatypeKeyword {
 // Name returns field key for the Datatype.
 func (k *DatatypeKeyword) Name() string {
 	return k.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (k *DatatypeKeyword) CopyTo(copyTo ...string) *DatatypeKeyword {
+	k.copyTo = append(k.copyTo, copyTo...)
+	return k
 }
 
 // Boost sets Mapping field-level query time boosting. Defaults to 1.0.
@@ -212,6 +223,7 @@ func (k *DatatypeKeyword) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "keyword",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"boost": 2,
 	// 		"doc_values": true,
 	// 		"eager_global_ordinals": true,
@@ -235,6 +247,20 @@ func (k *DatatypeKeyword) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "keyword"
 
+	if len(k.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(k.copyTo) > 1:
+			copyTo = k.copyTo
+			break
+		case len(k.copyTo) == 1:
+			copyTo = k.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if k.boost != nil {
 		options["boost"] = k.boost
 	}

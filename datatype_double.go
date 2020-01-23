@@ -13,7 +13,8 @@ import "fmt"
 // for details.
 type DatatypeDouble struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to double datatype
 	coerce          *bool
@@ -35,6 +36,16 @@ func NewDatatypeDouble(name string) *DatatypeDouble {
 // Name returns field key for the Datatype.
 func (d *DatatypeDouble) Name() string {
 	return d.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (d *DatatypeDouble) CopyTo(copyTo ...string) *DatatypeDouble {
+	d.copyTo = append(d.copyTo, copyTo...)
+	return d
 }
 
 // Coerce sets whether if the field should be coerced, attempting to clean up
@@ -123,6 +134,7 @@ func (d *DatatypeDouble) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
 	// 		"type": "double",
+	// 		"copy_to": ["field_1", "field_2"],
 	// 		"coerce": true,
 	// 		"boost": 2,
 	// 		"doc_values": true,
@@ -135,6 +147,20 @@ func (d *DatatypeDouble) Source(includeName bool) (interface{}, error) {
 	options := make(map[string]interface{})
 	options["type"] = "double"
 
+	if len(d.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(d.copyTo) > 1:
+			copyTo = d.copyTo
+			break
+		case len(d.copyTo) == 1:
+			copyTo = d.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 	if d.coerce != nil {
 		options["coerce"] = d.coerce
 	}

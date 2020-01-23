@@ -14,7 +14,8 @@ import "fmt"
 // for details.
 type DatatypeMapperMurmur3 struct {
 	Datatype
-	name string
+	name   string
+	copyTo []string
 
 	// fields specific to mapper murmur3 datatype
 }
@@ -29,6 +30,16 @@ func NewDatatypeMapperMurmur3(name string) *DatatypeMapperMurmur3 {
 // Name returns field key for the Datatype.
 func (m3 *DatatypeMapperMurmur3) Name() string {
 	return m3.name
+}
+
+// CopyTo sets the field(s) to copy to which allows the values of multiple fields to be
+// queried as a single field.
+//
+// See https://www.elastic.co/guide/en/elasticsearch/reference/7.5/copy-to.html
+// for details.
+func (m3 *DatatypeMapperMurmur3) CopyTo(copyTo ...string) *DatatypeMapperMurmur3 {
+	m3.copyTo = append(m3.copyTo, copyTo...)
+	return m3
 }
 
 // Validate validates DatatypeMapperMurmur3.
@@ -47,11 +58,27 @@ func (m3 *DatatypeMapperMurmur3) Validate(includeName bool) error {
 func (m3 *DatatypeMapperMurmur3) Source(includeName bool) (interface{}, error) {
 	// {
 	// 	"test": {
-	// 		"type": "murmur3"
+	// 		"type": "murmur3",
+	// 		"copy_to": ["field_1", "field_2"]
 	// 	}
 	// }
 	options := make(map[string]interface{})
 	options["type"] = "murmur3"
+
+	if len(m3.copyTo) > 0 {
+		var copyTo interface{}
+		switch {
+		case len(m3.copyTo) > 1:
+			copyTo = m3.copyTo
+			break
+		case len(m3.copyTo) == 1:
+			copyTo = m3.copyTo[0]
+			break
+		default:
+			copyTo = ""
+		}
+		options["copy_to"] = copyTo
+	}
 
 	if !includeName {
 		return options, nil
