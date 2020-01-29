@@ -26,7 +26,7 @@ var DefaultBuilder = func(name string, nestedCount int, dt Datatype, datatype es
 	return datatype
 }
 
-// New generates Elasticsearch mapping properties from origin's struct tags.
+// New generates Elasticsearch datatypes from origin's struct tags.
 func New(origin interface{}, nestedLimit int, builder Builder) ([]estemplate.Datatype, error) {
 	t, err := getStructFromOrigin(origin)
 	if err != nil {
@@ -37,11 +37,12 @@ func New(origin interface{}, nestedLimit int, builder Builder) ([]estemplate.Dat
 }
 
 // ToProperties convenience function that converts datatypes to properties.
-// Example:
-//z
-// src, _ := esproperties.ToProperties(estemplate.NewDatatypeNested("array"))
-// data, _ := json.Marshal(src)
-// fmt.Println(data) // {"array":{"type":"nested"}}
+//
+// For example:
+//
+// 		src, _ := esproperties.ToProperties(estemplate.NewDatatypeNested("array"))
+// 		data, _ := json.Marshal(src)
+// 		fmt.Println(data) // {"array":{"type":"nested"}}
 func ToProperties(datatypes []estemplate.Datatype) (interface{}, error) {
 	properties := make(map[string]interface{})
 	if len(datatypes) > 0 {
