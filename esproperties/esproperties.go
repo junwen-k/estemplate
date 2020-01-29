@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/junwen_k/estemplate"
+	"github.com/junwen-k/estemplate"
 )
 
 const (

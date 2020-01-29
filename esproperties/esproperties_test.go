@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/junwen_k/estemplate"
+	"github.com/junwen-k/estemplate"
 )
 
 type nestedTest struct {

@@ -6,5 +6,5 @@ Primarily focused on Index modules which includes Analysis and Mapping.
 To use Elastic Template Builder, import:
 
 ```go
-import "github.com/junwen_k/estemplate"
+import "github.com/junwen-k/estemplate"
 ```
