@@ -1,3 +1,3 @@
-module github.com/junwen_k/estemplate
+module github.com/junwen-k/estemplate
 
 go 1.13.5
